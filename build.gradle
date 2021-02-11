@@ -1,0 +1,60 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath "com.github.jengelman.gradle.plugins:shadow:5.1.0"
+    }
+}
+
+
+plugins {
+    id 'java'
+}
+apply plugin: "com.github.johnrengelman.shadow"
+
+group = 'me.zachary'
+version = '1.0'
+
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+repositories {
+    mavenLocal()
+    maven {
+        name = 'spigotmc-repo'
+        url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        name = 'sonatype'
+        url = 'https://oss.sonatype.org/content/groups/public/'
+    }
+    maven {
+        name = 'private'
+        url = 'http://51.254.247.74:90/private/'
+    }
+    maven {
+        name = 'jitpack.io'
+        url = 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.4'
+    compile 'me.zachary:ZachCore:0.7.20'
+}
+
+shadowJar {
+    relocate 'me.zachary.zachcore', 'me.zachary.historygui.core'
+    archiveFileName = "${baseName}-${version}.${extension}"
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        filter ReplaceTokens, tokens: [version: version]
+    }
+}

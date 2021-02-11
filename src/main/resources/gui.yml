@@ -1,0 +1,150 @@
+#  _    _ _     _                    _____ _    _ _____
+# | |  | (_)   | |                  / ____| |  | |_   _|
+# | |__| |_ ___| |_ ___  _ __ _   _| |  __| |  | | | |
+# |  __  | / __| __/ _ \| '__| | | | | |_ | |  | | | |
+# | |  | | \__ \ || (_) | |  | |_| | |__| | |__| |_| |_
+# |_|  |_|_|___/\__\___/|_|   \__, |\_____|\____/|_____|
+#                              __/ |
+#                             |___/
+#
+# History Gui - gui.yml - GUI Configuration
+# Copyright 2020 Zach_FR | All Rights Reserved
+#  Helpful Links:
+#   Support |   https://discord.zachfr.com
+#   Docs    |   https://docs.zachfr.com
+
+Gui:
+  Global glass color: "GREEN_STAINED_GLASS_PANE"
+  Main:
+    Title name: "{target}'s punishments"
+    Ban:
+      Icon: "RED_WOOL"
+      Icon name: "&6Ban"
+    Kick:
+      Icon: "YELLOW_WOOL"
+      Icon name: "&6Kick"
+    Mute:
+      Icon: "ORANGE_WOOL"
+      Icon name: "&6Mute"
+    Warning:
+      Icon: "GREEN_WOOL"
+      Icon name: "&6Warning"
+  Browse:
+    Title name: "Search a player"
+  Edit:
+    Title name: "Edit punishment"
+    Delete:
+      Icon: "REDSTONE_BLOCK"
+      Name: "&4Delete punishment"
+      Lore:
+        - "&7This will &4delete &7punishment"
+    Edit:
+      Icon: "OAK_SIGN"
+      Name: "&4Edit reason"
+      Lore:
+        - "&7Click to edit reason"
+        - "&6Current reason: {reason}"
+  Ban:
+    Title name: "{target}'s bans"
+    Icon: "RED_WOOL"
+    Icon name: "&6{time}"
+    Content:
+      - ""
+      - "&6Ban by: &e{name}"
+      - "&6Server: &e{server}"
+      - "&6Reason: &e{reason}"
+      - ""
+      - "{remove}"
+      - ""
+      - "{duration}"
+      - ""
+      - "&7Click to edit punishment"
+  Kick:
+    Title name: "{target}'s kicks"
+    Icon: "YELLOW_WOOL"
+    Icon name: "&6{time}"
+    Content:
+      - ""
+      - "&6Kick by: &e{name}"
+      - "&6Server: &e{server}"
+      - "&6Reason: &e{reason}"
+      - ""
+      - "&7Click to edit punishment"
+  Mute:
+    Title name: "{target}'s mutes"
+    Icon: "ORANGE_WOOL"
+    Icon name: "&6{time}"
+    Content:
+      - ""
+      - "&6Mute by: &e{name}"
+      - "&6Server: &e{server}"
+      - "&6Reason: &e{reason}"
+      - ""
+      - "{remove}"
+      - ""
+      - "{duration}"
+      - ""
+      - "&7Click to edit punishment"
+  Warning:
+    Title name: "{target}'s warnings"
+    Icon: "GREEN_WOOL"
+    Icon name: "&6{time}"
+    Content:
+      - ""
+      - "&6Warn by: &e{name}"
+      - "&6Server: &e{server}"
+      - "&6Reason: &e{reason}"
+      - ""
+      - "&7Click to edit punishment"
+  Pagination:
+    Back button:
+      Item: REDSTONE
+      Name: "&c&lBack"
+    Close button:
+      Item: REDSTONE
+      Name: "&c&lClose menu"
+    Previous button:
+      Item: ARROW
+      Name: "&a&l\u2190 Previous Page"
+      Lore:
+        - "&aClick to move back to"
+        - "&apage {page}."
+    Current button:
+      Item: OAK_SIGN
+      Name: "&7&lPage {currentpage} of {maxpage}"
+      Lore:
+        - "&7You are currently viewing"
+        - "&apage {page}."
+    Next button:
+      Item: ARROW
+      Name: "&a&lNext Page \u2192"
+      Lore:
+        - "&aClick to move forward to"
+        - "&apage {page}."
+
+
+
+# Content of {remove}
+Sanction remove:
+  true:
+    - "&6Removed by: &e{remover}"
+    - "&6Remove date: &e{time}"
+  false:
+    - "&6Punishment not remove"
+
+# Content of {duration}
+Sanction duration:
+  permanent:
+    - "&6Permanent punishment"
+  not permanent:
+    - "&6Duration: &e{time}"
+    - "&6Expire time: &e{expire}"
+
+# Empty punishment button, show in middle of gui when player doesn't have
+# punishment in this category.
+Empty punishment button:
+  Item: BARRIER
+  Name: "&2No punishment"
+  Lore:
+    - "&a{player} doesn't"
+    - "&ahave any {category}."

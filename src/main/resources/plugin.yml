@@ -1,0 +1,12 @@
+name: Historygui
+version: @version@
+main: me.zachary.historygui.Historygui
+api-version: 1.13
+authors: [ Zach_FR ]
+softdepend: [ LiteBans ]
+description: A history gui for liteban
+
+commands:
+  check:
+    description: Get history punishment of player
+    aliases: [c, history, punishments]
