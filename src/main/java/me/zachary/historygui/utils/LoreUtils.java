@@ -20,7 +20,8 @@ public class LoreUtils {
                 lore.addAll(duration);
             }else{
                 for (int i = 0; i < replacement.size(); i++){
-                    l = l.replace(replace.get(i), replacement.get(i));
+                    if(replace.get(i) != null && replacement.get(i) != null)
+                        l = l.replace(replace.get(i), replacement.get(i));
                 }
                 lore.add(l);
             }
