@@ -92,7 +92,7 @@ public class BanGui {
 
                         slot++;
                         if(slot == 17){
-                            slot = 0;
+                            slot = 10;
                             page++;
                             GuiUtils.setGlass(banGUI, page);
                         }

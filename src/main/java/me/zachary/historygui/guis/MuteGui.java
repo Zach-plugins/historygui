@@ -91,7 +91,7 @@ public class MuteGui {
 
                         slot++;
                         if(slot == 17){
-                            slot = 0;
+                            slot = 10;
                             page++;
                             GuiUtils.setGlass(muteGUI, page);
                         }

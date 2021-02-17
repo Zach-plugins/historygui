@@ -65,7 +65,7 @@ public class KickGui {
 
                         slot++;
                         if(slot == 17){
-                            slot = 0;
+                            slot = 10;
                             page++;
                             GuiUtils.setGlass(kickGUI, page);
                         }

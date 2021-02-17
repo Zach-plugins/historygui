@@ -67,7 +67,7 @@ public class WarningGui {
 
                         slot++;
                         if(slot == 17){
-                            slot = 0;
+                            slot = 10;
                             page++;
                             GuiUtils.setGlass(warningGUI, page);
                         }

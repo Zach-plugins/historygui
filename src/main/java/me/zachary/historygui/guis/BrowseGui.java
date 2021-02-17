@@ -46,8 +46,10 @@ public class BrowseGui {
                         browseGui.setButton(page, slot, playerButton);
 
                         slot++;
+                        if(slot == 17 || slot == 26)
+                            slot += 2;
                         if(slot == 35){
-                            slot = 0;
+                            slot = 10;
                             page++;
                             GuiUtils.setGlass(browseGui, page);
                         }
