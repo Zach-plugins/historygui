@@ -28,7 +28,7 @@ public class MuteGui {
     }
 
     public void openMuteInventory(Player player, OfflinePlayer target){
-        ZMenu muteGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Mute.Title name").replace("{target}", target.getName()), 3);
+        ZMenu muteGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Mute.Title name").replace("{target}", target.getName()), plugin.getGuiConfig().getInt("Gui.Mute.Row") + 2);
         muteGUI.setAutomaticPaginationEnabled(true);
         muteGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
@@ -89,12 +89,35 @@ public class MuteGui {
 
                         muteGUI.setButton(page, slot, banButton);
 
-                        slot++;
-                        if(slot == 17){
-                            slot = 10;
-                            page++;
-                            GuiUtils.setGlass(muteGUI, page);
-                        }
+                        if(plugin.getGuiConfig().getInt("Gui.Mute.Row") == 1){
+                            slot++;
+                            if(slot == 17){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(muteGUI, page);
+                            }
+                        } else if(plugin.getGuiConfig().getInt("Gui.Mute.Row") == 2){
+                            if(slot == 17)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 26){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(muteGUI, page);
+                            }
+                        }else if(plugin.getGuiConfig().getInt("Gui.Mute.Row") == 3){
+                            if(slot == 17 || slot == 26)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 35){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(muteGUI, page);
+                            }
+                        }else
+                            slot++; // ?
                     }
                     if(muteGUI.getButton(10) == null){
                         ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())

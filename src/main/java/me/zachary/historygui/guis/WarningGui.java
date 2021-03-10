@@ -27,7 +27,7 @@ public class WarningGui {
     }
 
     public void openWarningInventory(Player player, OfflinePlayer target){
-        ZMenu warningGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Warning.Title name").replace("{target}", target.getName()), 3);
+        ZMenu warningGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Warning.Title name").replace("{target}", target.getName()), plugin.getGuiConfig().getInt("Gui.Warning.Row") + 2);
         warningGUI.setAutomaticPaginationEnabled(true);
         warningGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
@@ -65,12 +65,35 @@ public class WarningGui {
 
                         warningGUI.setButton(page, slot, banButton);
 
-                        slot++;
-                        if(slot == 17){
-                            slot = 10;
-                            page++;
-                            GuiUtils.setGlass(warningGUI, page);
-                        }
+                        if(plugin.getGuiConfig().getInt("Gui.Warning.Row") == 1){
+                            slot++;
+                            if(slot == 17){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(warningGUI, page);
+                            }
+                        } else if(plugin.getGuiConfig().getInt("Gui.Warning.Row") == 2){
+                            if(slot == 17)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 26){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(warningGUI, page);
+                            }
+                        }else if(plugin.getGuiConfig().getInt("Gui.Warning.Row") == 3){
+                            if(slot == 17 || slot == 26)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 35){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(warningGUI, page);
+                            }
+                        }else
+                            slot++; // ?
                     }
                     if(warningGUI.getButton(10) == null){
                         ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())

@@ -27,7 +27,7 @@ public class KickGui {
     }
 
     public void openKickInventory(Player player, OfflinePlayer target){
-        ZMenu kickGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Kick.Title name").replace("{target}", target.getName()), 3);
+        ZMenu kickGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Kick.Title name").replace("{target}", target.getName()), plugin.getGuiConfig().getInt("Gui.Kick.Row") + 2);
         kickGUI.setAutomaticPaginationEnabled(true);
         kickGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
@@ -63,12 +63,35 @@ public class KickGui {
 
                         kickGUI.setButton(page, slot, banButton);
 
-                        slot++;
-                        if(slot == 17){
-                            slot = 10;
-                            page++;
-                            GuiUtils.setGlass(kickGUI, page);
-                        }
+                        if(plugin.getGuiConfig().getInt("Gui.Kick.Row") == 1){
+                            slot++;
+                            if(slot == 17){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(kickGUI, page);
+                            }
+                        } else if(plugin.getGuiConfig().getInt("Gui.Kick.Row") == 2){
+                            if(slot == 17)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 26){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(kickGUI, page);
+                            }
+                        }else if(plugin.getGuiConfig().getInt("Gui.Kick.Row") == 3){
+                            if(slot == 17 || slot == 26)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 35){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(kickGUI, page);
+                            }
+                        }else
+                            slot++; // ?
                     }
                     if(kickGUI.getButton(10) == null){
                         ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())

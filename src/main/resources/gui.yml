@@ -48,6 +48,8 @@ Gui:
     Title name: "{target}'s bans"
     Icon: "RED_WOOL"
     Icon name: "&6{time}"
+    # Available row: 1, 2, 3
+    Row: 1
     Content:
       - ""
       - "&6Ban by: &e{name}"
@@ -63,6 +65,8 @@ Gui:
     Title name: "{target}'s kicks"
     Icon: "YELLOW_WOOL"
     Icon name: "&6{time}"
+    # Available row: 1, 2, 3
+    Row: 1
     Content:
       - ""
       - "&6Kick by: &e{name}"
@@ -74,6 +78,8 @@ Gui:
     Title name: "{target}'s mutes"
     Icon: "ORANGE_WOOL"
     Icon name: "&6{time}"
+    # Available row: 1, 2, 3
+    Row: 1
     Content:
       - ""
       - "&6Mute by: &e{name}"
@@ -89,6 +95,8 @@ Gui:
     Title name: "{target}'s warnings"
     Icon: "GREEN_WOOL"
     Icon name: "&6{time}"
+    # Available row: 1, 2, 3
+    Row: 1
     Content:
       - ""
       - "&6Warn by: &e{name}"

@@ -28,7 +28,7 @@ public class BanGui {
     }
 
     public void openBanInventory(Player player, OfflinePlayer target){
-        ZMenu banGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Ban.Title name").replace("{target}", target.getName()), 3);
+        ZMenu banGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Ban.Title name").replace("{target}", target.getName()), plugin.getGuiConfig().getInt("Gui.Ban.Row") + 2);
         banGUI.setAutomaticPaginationEnabled(true);
         banGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
@@ -90,12 +90,35 @@ public class BanGui {
 
                         banGUI.setButton(page, slot, banButton);
 
-                        slot++;
-                        if(slot == 17){
-                            slot = 10;
-                            page++;
-                            GuiUtils.setGlass(banGUI, page);
-                        }
+                        if(plugin.getGuiConfig().getInt("Gui.Ban.Row") == 1){
+                            slot++;
+                            if(slot == 17){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(banGUI, page);
+                            }
+                        } else if(plugin.getGuiConfig().getInt("Gui.Ban.Row") == 2){
+                            if(slot == 17)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 26){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(banGUI, page);
+                            }
+                        }else if(plugin.getGuiConfig().getInt("Gui.Ban.Row") == 3){
+                            if(slot == 17 || slot == 26)
+                                slot += 2;
+                            else
+                                slot++;
+                            if(slot == 35){
+                                slot = 10;
+                                page++;
+                                GuiUtils.setGlass(banGUI, page);
+                            }
+                        }else
+                            slot++; // ?
                     }
                     if(banGUI.getButton(10) == null){
                         ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
