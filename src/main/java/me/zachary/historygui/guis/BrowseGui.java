@@ -43,6 +43,8 @@ public class BrowseGui {
                         OfflinePlayer target = Bukkit.getServer().getOfflinePlayer(UUID.fromString(rs.getString("uuid")));
                         if(!plugin.getConfig().getBoolean("Offline player") && target.getPlayer() == null)
                             continue;
+                        if(target.getName() == null)
+                            continue;
                         ZButton playerButton = new ZButton(getHeadItemDisplay(target))
                                 .withListener(inventoryClickEvent -> {
                             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
