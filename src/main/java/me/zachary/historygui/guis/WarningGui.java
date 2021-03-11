@@ -73,8 +73,8 @@ public class WarningGui {
                                 GuiUtils.setGlass(warningGUI, page);
                             }
                         } else if(plugin.getGuiConfig().getInt("Gui.Warning.Row") == 2){
-                            if(slot == 17)
-                                slot += 2;
+                            if(slot == 16)
+                                slot += 3;
                             else
                                 slot++;
                             if(slot == 26){
@@ -83,8 +83,8 @@ public class WarningGui {
                                 GuiUtils.setGlass(warningGUI, page);
                             }
                         }else if(plugin.getGuiConfig().getInt("Gui.Warning.Row") == 3){
-                            if(slot == 17 || slot == 26)
-                                slot += 2;
+                            if(slot == 16 || slot == 25)
+                                slot += 3;
                             else
                                 slot++;
                             if(slot == 35){

@@ -97,8 +97,8 @@ public class MuteGui {
                                 GuiUtils.setGlass(muteGUI, page);
                             }
                         } else if(plugin.getGuiConfig().getInt("Gui.Mute.Row") == 2){
-                            if(slot == 17)
-                                slot += 2;
+                            if(slot == 16)
+                                slot += 3;
                             else
                                 slot++;
                             if(slot == 26){
@@ -107,8 +107,8 @@ public class MuteGui {
                                 GuiUtils.setGlass(muteGUI, page);
                             }
                         }else if(plugin.getGuiConfig().getInt("Gui.Mute.Row") == 3){
-                            if(slot == 17 || slot == 26)
-                                slot += 2;
+                            if(slot == 16 || slot == 25)
+                                slot += 3;
                             else
                                 slot++;
                             if(slot == 35){

@@ -98,8 +98,8 @@ public class BanGui {
                                 GuiUtils.setGlass(banGUI, page);
                             }
                         } else if(plugin.getGuiConfig().getInt("Gui.Ban.Row") == 2){
-                            if(slot == 17)
-                                slot += 2;
+                            if(slot == 16)
+                                slot += 3;
                             else
                                 slot++;
                             if(slot == 26){
@@ -108,8 +108,8 @@ public class BanGui {
                                 GuiUtils.setGlass(banGUI, page);
                             }
                         }else if(plugin.getGuiConfig().getInt("Gui.Ban.Row") == 3){
-                            if(slot == 17 || slot == 26)
-                                slot += 2;
+                            if(slot == 16 || slot == 25)
+                                slot += 3;
                             else
                                 slot++;
                             if(slot == 35){
