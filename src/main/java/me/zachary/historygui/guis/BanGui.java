@@ -84,7 +84,7 @@ public class BanGui {
                         .name(plugin.getGuiConfig().getString("Gui.Ban.Icon name").replace("{time}", new Date(rs.getLong("time")).toString()))
                         .lore(LoreUtils.getLore("Gui.Ban.Content", replace, replacement, remove, duration))
                         .build()).withListener(inventoryClickEvent -> {
-                            if(plugin.getConfig().getBoolean("Allow edit punishment"))
+                            if(plugin.getConfig().getBoolean("Allow edit punishment") && player.hasPermission("historygui.edit.ban"))
                                 new EditGui(plugin).openEditGui(player, target, "{bans}", reason, id);
                         });
 

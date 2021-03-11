@@ -59,7 +59,7 @@ public class WarningGui {
                                 .name(plugin.getGuiConfig().getString("Gui.Warning.Icon name").replace("{time}", new Date(rs.getLong("time")).toString()))
                                 .lore(LoreUtils.getLore("Gui.Warning.Content", replace, replacement, remove, duration))
                                 .build()).withListener(inventoryClickEvent -> {
-                            if(plugin.getConfig().getBoolean("Allow edit punishment"))
+                            if(plugin.getConfig().getBoolean("Allow edit punishment") && player.hasPermission("historygui.edit.warning"))
                                 new EditGui(plugin).openEditGui(player, target, "{warnings}", reason, id);
                         });
 

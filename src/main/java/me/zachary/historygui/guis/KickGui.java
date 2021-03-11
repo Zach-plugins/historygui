@@ -57,7 +57,7 @@ public class KickGui {
                                 .name(plugin.getGuiConfig().getString("Gui.Kick.Icon name").replace("{time}", new Date(rs.getLong("time")).toString()))
                                 .lore(LoreUtils.getLore("Gui.Kick.Content", replace, replacement, null, null))
                                 .build()).withListener(inventoryClickEvent -> {
-                            if(plugin.getConfig().getBoolean("Allow edit punishment"))
+                            if(plugin.getConfig().getBoolean("Allow edit punishment") && player.hasPermission("historygui.edit.kick"))
                                 new EditGui(plugin).openEditGui(player, target, "{kicks}", reason, id);
                         });
 

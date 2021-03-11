@@ -83,7 +83,7 @@ public class MuteGui {
                                 .name(plugin.getGuiConfig().getString("Gui.Mute.Icon name").replace("{time}", new Date(rs.getLong("time")).toString()))
                                 .lore(LoreUtils.getLore("Gui.Mute.Content", replace, replacement, remove, duration))
                                 .build()).withListener(inventoryClickEvent -> {
-                                    if(plugin.getConfig().getBoolean("Allow edit punishment"))
+                                    if(plugin.getConfig().getBoolean("Allow edit punishment") && player.hasPermission("historygui.edit.mute"))
                                         new EditGui(plugin).openEditGui(player, target, "{mutes}", reason, id);
                         });
 
