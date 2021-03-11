@@ -15,3 +15,6 @@
 
 # Should we allow edit punishment on gui?
 Allow edit punishment: true
+
+# Should we only show offline player in browser gui?
+Offline player: true
