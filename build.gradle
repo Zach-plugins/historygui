@@ -17,7 +17,7 @@ plugins {
 apply plugin: "com.github.johnrengelman.shadow"
 
 group = 'me.zachary'
-version = '1.0.2'
+version = '1.0.3'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -34,7 +34,7 @@ repositories {
     }
     maven {
         name = 'private'
-        url = 'http://51.254.247.74:90/private/'
+        url = 'http://51.254.247.82:90/private/'
     }
     maven {
         name = 'jitpack.io'
@@ -45,7 +45,7 @@ repositories {
 dependencies {
     compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
     compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.4'
-    compile 'me.zachary:ZachCore:0.7.20'
+    compile 'me.zachary:ZachCore:0.7.23'
 }
 
 shadowJar {
