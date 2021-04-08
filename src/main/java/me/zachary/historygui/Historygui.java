@@ -75,4 +75,9 @@ public final class Historygui extends ZachCorePlugin {
     public YamlConfiguration getMessageConfig(){
         return messageConfig;
     }
+
+    @Override
+    public void onDataLoad() {
+
+    }
 }

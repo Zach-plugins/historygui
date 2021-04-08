@@ -49,7 +49,7 @@ public class WarningGui {
                         replace.add("{name}");
                         replacement.add(rs.getString("banned_by_name"));
                         replace.add("{server}");
-                        replacement.add(rs.getString("server_origin"));
+                        replacement.add(rs.getString("server_origin") != null ? rs.getString("server_origin") : "Server");
                         replace.add("{reason}");
                         replacement.add(rs.getString("reason"));
 
