@@ -12,10 +12,10 @@ public class LoreUtils {
     public static List<String> getLore(String path, List<String> replace, List<String> replacement, List<String> remove, List<String> duration) {
         List<String> lore = new ArrayList<>();
         for (String l : plugin.getGuiConfig().getStringList(path)) {
-            if(l.equals("{remove}")){
+            if(l.contains("{remove}")){
                 l.replace("{remove}", "");
                 lore.addAll(remove);
-            }else if(l.equals("{duration}")){
+            }else if(l.contains("{duration}")){
                 l.replace("{duration}", "");
                 lore.addAll(duration);
             }else{
