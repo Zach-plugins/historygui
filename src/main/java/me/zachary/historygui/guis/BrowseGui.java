@@ -30,7 +30,7 @@ public class BrowseGui {
 
     public void openBrowseGui(Player player){
         ZMenu browseGui = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Browse.Title name"), 5);
-        browseGui.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, null, null));
+        browseGui.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, null, null, null, null));
         GuiUtils.setGlass(browseGui, 0);
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {

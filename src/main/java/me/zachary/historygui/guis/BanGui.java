@@ -22,6 +22,7 @@ import java.util.List;
 
 public class BanGui {
     private Historygui plugin;
+    private Boolean sort = false;
 
     public BanGui(Historygui plugin) {
         this.plugin = plugin;
@@ -32,11 +33,21 @@ public class BanGui {
         banGUI.setAutomaticPaginationEnabled(true);
         banGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+        }, sort, inventoryClickEvent -> {
+            sort = !sort;
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.closeInventory();
+                openBanInventory(player, target);
+            });
         }));
         GuiUtils.setGlass(banGUI, 0);
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            String query = "SELECT * FROM {bans} WHERE uuid=?";
+            String query;
+            if(sort)
+                query = "SELECT * FROM {bans} WHERE uuid=? ORDER BY TIME ASC";
+            else
+                query = "SELECT * FROM {bans} WHERE uuid=? ORDER BY TIME DESC";
             int slot = 10;
             int page = 0;
             try (PreparedStatement st = Database.get().prepareStatement(query)) {

@@ -33,10 +33,6 @@ repositories {
         url = 'https://oss.sonatype.org/content/groups/public/'
     }
     maven {
-        name = 'private'
-        url = 'http://51.254.247.82:90/private/'
-    }
-    maven {
         name = 'jitpack.io'
         url = 'https://jitpack.io'
     }

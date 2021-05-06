@@ -21,6 +21,7 @@ import java.util.List;
 
 public class WarningGui {
     private Historygui plugin;
+    private Boolean sort = false;
 
     public WarningGui(Historygui plugin) {
         this.plugin = plugin;
@@ -31,11 +32,21 @@ public class WarningGui {
         warningGUI.setAutomaticPaginationEnabled(true);
         warningGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+        }, sort, inventoryClickEvent -> {
+            sort = !sort;
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.closeInventory();
+                openWarningInventory(player, target);
+            });
         }));
         GuiUtils.setGlass(warningGUI, 0);
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            String query = "SELECT * FROM {warnings} WHERE uuid=?";
+            String query;
+            if(sort)
+                query = "SELECT * FROM {warnings} WHERE uuid=? ORDER BY TIME ASC";
+            else
+                query = "SELECT * FROM {warnings} WHERE uuid=? ORDER BY TIME DESC";
             int slot = 10;
             int page = 0;
             try (PreparedStatement st = Database.get().prepareStatement(query)) {

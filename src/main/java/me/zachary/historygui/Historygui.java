@@ -2,6 +2,7 @@ package me.zachary.historygui;
 
 import me.zachary.historygui.commands.HistoryCommand;
 import me.zachary.zachcore.ZachCorePlugin;
+import me.zachary.zachcore.config.Config;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.Metrics;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,13 +13,13 @@ public final class Historygui extends ZachCorePlugin {
     public static ZachGUI zachGUI;
     private File guiFile;
     private File messageFile;
-    public YamlConfiguration guiConfig;
+    public Config guiConfig = new Config();
     public YamlConfiguration messageConfig;
 
     @Override
     public void onEnable() {
         zachGUI = new ZachGUI(this);
-        loadGuiConfig();
+        reloadGuiConfig();
         loadMessageConfig();
         saveDefaultConfig();
         new HistoryCommand(this);
@@ -36,17 +37,6 @@ public final class Historygui extends ZachCorePlugin {
         return zachGUI;
     }
 
-    public void loadGuiConfig() {
-        guiFile = new File(getDataFolder() + File.separator + "gui.yml");
-
-        if (!guiFile.exists()) {
-            saveResource("gui.yml", false);
-            guiFile = new File(getDataFolder() + File.separator + "gui.yml");
-        }
-
-        guiConfig = YamlConfiguration.loadConfiguration(guiFile);
-    }
-
     public void loadMessageConfig() {
         messageFile = new File(getDataFolder() + File.separator + "messages.yml");
 
@@ -59,8 +49,12 @@ public final class Historygui extends ZachCorePlugin {
     }
 
     public void reloadGuiConfig() {
-        guiFile = new File(getDataFolder() + File.separator + "gui.yml");
-        guiConfig = YamlConfiguration.loadConfiguration(guiFile);
+        if (!new File(this.getDataFolder(), "gui.yml").exists()) {
+            saveResource("gui.yml", false);
+        }
+
+        guiConfig.load(new File(getDataFolder() + File.separator + "gui.yml"),
+                getResource("gui.yml"), "");
     }
 
     public void reloadMessageConfig() {

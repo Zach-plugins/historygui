@@ -129,6 +129,12 @@ Gui:
       Lore:
         - "&aClick to move forward to"
         - "&apage {page}."
+    Sort button:
+      Item: CLOCK
+      Name: "&aSort punishment"
+      Lore:
+        - "&7Click to sort punishment by date"
+        - "{sort}"
 
 
 
@@ -147,6 +153,15 @@ Sanction duration:
   not permanent:
     - "&6Duration: &e{time}"
     - "&6Expire time: &e{expire}"
+
+# Content of {sort}
+Sort placeholder:
+  Ascending:
+    - "&2➔ &aAscending"
+    - "&8➔ &7Descending"
+  Descending:
+    - "&8➔ &7Ascending"
+    - "&2➔ &aDescending"
 
 # Empty punishment button, show in middle of gui when player doesn't have
 # punishment in this category.

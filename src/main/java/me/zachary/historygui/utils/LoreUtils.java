@@ -40,4 +40,16 @@ public class LoreUtils {
         }
         return lore;
     }
+
+    public static List<String> getLore(String path, String oldChar1, List<String> newChar1) {
+        List<String> lore = new ArrayList<>();
+        for (String l : plugin.getGuiConfig().getStringList(path)) {
+            if(l.equals(oldChar1))
+                for(String s : newChar1)
+                    lore.add(l.replace(oldChar1, s));
+            else
+                lore.add(l);
+        }
+        return lore;
+    }
 }

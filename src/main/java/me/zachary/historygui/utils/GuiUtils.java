@@ -10,9 +10,11 @@ import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 public class GuiUtils {
@@ -54,7 +56,7 @@ public class GuiUtils {
         );
     }
 
-    public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, OfflinePlayer target, Runnable runnable){
+    public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, OfflinePlayer target, Runnable runnable, Boolean sort, Consumer<InventoryClickEvent> sortClick){
         return (type, inventory) -> {
             switch (type) {
                 case CLOSE_BUTTON:
@@ -102,11 +104,17 @@ public class GuiUtils {
                         inventory.nextPage(event.getWhoClicked());
                     });
                     else return null;
-                case CUSTOM_2:
+                case UNASSIGNED:
+                    if(sort != null)
+                        return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Name"))
+                            .lore(LoreUtils.getLore("Gui.Pagination.Sort button.Lore", "{sort}", sort ? plugin.getGuiConfig().getStringList("Sort placeholder.Descending") : plugin.getGuiConfig().getStringList("Sort placeholder.Ascending")))
+                            .build()).withListener(sortClick::accept);
+                    else return null;
                 case CUSTOM_1:
+                case CUSTOM_2:
                 case CUSTOM_3:
                 case CUSTOM_4:
-                case UNASSIGNED:
                 default:
                     return null;
             }

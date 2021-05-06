@@ -23,7 +23,7 @@ public class HistoryGui {
         historyGUI.setAutomaticPaginationEnabled(true);
         historyGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             new BrowseGui(plugin).openBrowseGui(player);
-        }));
+        }, null, null));
         GuiUtils.setGlass(historyGUI, 0);
 
 
