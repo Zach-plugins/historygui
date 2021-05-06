@@ -45,7 +45,7 @@ public class BrowseGui {
                             continue;
                         if(target.getName() == null)
                             continue;
-                        ZButton playerButton = new ZButton(getHeadItemDisplay(target))
+                        ZButton playerButton = new ZButton(plugin.getConfig().getBoolean("Player head.Enable") ? getHeadItemDisplay(target) : new ItemBuilder(XMaterial.valueOf(plugin.getConfig().getString("Player head.Item")).parseItem()).name(ChatUtils.colorCode("&7" + target.getName())).build())
                                 .withListener(inventoryClickEvent -> {
                             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
                         });
