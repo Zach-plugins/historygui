@@ -1,5 +1,6 @@
 package me.zachary.historygui.commands;
 
+import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.guis.BrowseGui;
 import me.zachary.historygui.guis.HistoryGui;
@@ -10,6 +11,11 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.UUID;
 
 public class HistoryCommand implements CommandExecutor {
     private Historygui plugin;
@@ -36,12 +42,16 @@ public class HistoryCommand implements CommandExecutor {
             return true;
         }
 
-        OfflinePlayer target = Bukkit.getServer().getOfflinePlayer(args[0]);
-        if(!target.hasPlayedBefore()){
+        System.out.println(plugin.getPlayerManager().getPlayers().size());
+
+        me.zachary.historygui.player.Player target = plugin.getPlayerManager().getPlayers().values().stream().filter(player1 -> player1.getPlayerName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
+        if(target == null){
             MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("Player not found"));
             return true;
         }
+
         player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+
         return false;
     }
 }

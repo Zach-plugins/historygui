@@ -16,7 +16,7 @@
 # Should we allow edit punishment on gui?
 Allow edit punishment: true
 
-# Should we only show offline player in browser gui?
+# Should we only show offline players in browser gui?
 Offline player: true
 
 # Should we load player head skin in browser gui (May cause some lag if you enable)?

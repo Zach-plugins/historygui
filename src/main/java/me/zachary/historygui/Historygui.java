@@ -1,6 +1,7 @@
 package me.zachary.historygui;
 
 import me.zachary.historygui.commands.HistoryCommand;
+import me.zachary.historygui.player.PlayerManager;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.config.Config;
 import me.zachary.zachcore.guis.ZachGUI;
@@ -16,6 +17,8 @@ public final class Historygui extends ZachCorePlugin {
     public Config guiConfig = new Config();
     public YamlConfiguration messageConfig;
 
+    private PlayerManager playerManager;
+
     @Override
     public void onEnable() {
         zachGUI = new ZachGUI(this);
@@ -23,6 +26,9 @@ public final class Historygui extends ZachCorePlugin {
         loadMessageConfig();
         saveDefaultConfig();
         new HistoryCommand(this);
+
+        playerManager = new PlayerManager(this);
+
         Metrics metrics = new Metrics(this, 10290);
 
         preEnable(this);
@@ -68,6 +74,10 @@ public final class Historygui extends ZachCorePlugin {
 
     public YamlConfiguration getMessageConfig(){
         return messageConfig;
+    }
+
+    public PlayerManager getPlayerManager(){
+        return playerManager;
     }
 
     @Override

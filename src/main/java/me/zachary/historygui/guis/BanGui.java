@@ -28,8 +28,8 @@ public class BanGui {
         this.plugin = plugin;
     }
 
-    public void openBanInventory(Player player, OfflinePlayer target){
-        ZMenu banGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Ban.Title name").replace("{target}", target.getName()), plugin.getGuiConfig().getInt("Gui.Ban.Row") + 2);
+    public void openBanInventory(Player player, me.zachary.historygui.player.Player target){
+        ZMenu banGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Ban.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Ban.Row") + 2);
         banGUI.setAutomaticPaginationEnabled(true);
         banGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
@@ -51,7 +51,7 @@ public class BanGui {
             int slot = 10;
             int page = 0;
             try (PreparedStatement st = Database.get().prepareStatement(query)) {
-                st.setString(1, String.valueOf(target.getUniqueId()));
+                st.setString(1, String.valueOf(target.getUUID()));
                 try (ResultSet rs = st.executeQuery()) {
                     while (rs.next()) {
                         List<String> replace = new ArrayList<>();
@@ -134,7 +134,7 @@ public class BanGui {
                     if(banGUI.getButton(10) == null){
                         ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
                                 .name(plugin.getGuiConfig().getString("Empty punishment button.Name"))
-                                .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getName(), "{category}", "ban"))
+                                .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getPlayerName(), "{category}", "ban"))
                                 .build());
                         banGUI.setButton(13, emptyButton);
                     }

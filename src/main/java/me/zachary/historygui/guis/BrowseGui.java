@@ -34,48 +34,39 @@ public class BrowseGui {
         GuiUtils.setGlass(browseGui, 0);
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            String query = "select * from {history} WHERE uuid != 'CONSOLE'";
             int slot = 10;
             int page = 0;
-            try (PreparedStatement st = Database.get().prepareStatement(query)) {
-                try (ResultSet rs = st.executeQuery()) {
-                    while (rs.next()) {
-                        OfflinePlayer target = Bukkit.getServer().getOfflinePlayer(UUID.fromString(rs.getString("uuid")));
-                        if(!plugin.getConfig().getBoolean("Offline player") && target.getPlayer() == null)
-                            continue;
-                        if(target.getName() == null)
-                            continue;
-                        ZButton playerButton = new ZButton(plugin.getConfig().getBoolean("Player head.Enable") ? getHeadItemDisplay(target) : new ItemBuilder(XMaterial.valueOf(plugin.getConfig().getString("Player head.Item")).parseItem()).name(ChatUtils.colorCode("&7" + target.getName())).build())
-                                .withListener(inventoryClickEvent -> {
-                            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+            for(me.zachary.historygui.player.Player p : plugin.getPlayerManager().getPlayers().values()){
+                if(!plugin.getConfig().getBoolean("Offline player") && Bukkit.getPlayer(p.getUUID()) == null)
+                    continue;
+                ZButton playerButton = new ZButton(plugin.getConfig().getBoolean("Player head.Enable") ? getHeadItemDisplay(p) : new ItemBuilder(XMaterial.valueOf(plugin.getConfig().getString("Player head.Item")).parseItem()).name(ChatUtils.colorCode("&7" + p.getPlayerName())).build())
+                        .withListener(inventoryClickEvent -> {
+                            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, p));
                         });
 
-                        browseGui.setButton(page, slot, playerButton);
+                browseGui.setButton(page, slot, playerButton);
 
-                        slot++;
-                        if(slot == 17 || slot == 26)
-                            slot += 2;
-                        if(slot == 35){
-                            slot = 10;
-                            page++;
-                            GuiUtils.setGlass(browseGui, page);
-                        }
-                    }
-                    Bukkit.getScheduler().runTask(plugin, () -> {
-                        player.openInventory(browseGui.getInventory());
-                    });
+                slot++;
+                if(slot == 17 || slot == 26)
+                    slot += 2;
+                if(slot == 35){
+                    slot = 10;
+                    page++;
+                    GuiUtils.setGlass(browseGui, page);
                 }
-            } catch (SQLException e) {
-                e.printStackTrace();
+                player.updateInventory();
             }
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                player.openInventory(browseGui.getInventory());
+            });
         });
     }
 
-    public ItemStack getHeadItemDisplay(OfflinePlayer op) {
-        ItemStack item = new ItemStack(SkullUtils.getSkull(op.getUniqueId()).getType(), 1, (short) 3);
+    public ItemStack getHeadItemDisplay(me.zachary.historygui.player.Player op) {
+        ItemStack item = new ItemStack(SkullUtils.getSkull(op.getUUID()).getType(), 1, (short) 3);
         SkullMeta pSkull = (SkullMeta) item.getItemMeta();
-        pSkull.setDisplayName(ChatUtils.colorCode("&7" + op.getName()));
-        pSkull.setOwner(op.getName());
+        pSkull.setDisplayName(ChatUtils.colorCode("&7" + op.getPlayerName()));
+        pSkull.setOwner(op.getPlayerName());
         item.setItemMeta(pSkull);
         return item;
     }

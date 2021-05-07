@@ -56,7 +56,7 @@ public class GuiUtils {
         );
     }
 
-    public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, OfflinePlayer target, Runnable runnable, Boolean sort, Consumer<InventoryClickEvent> sortClick){
+    public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, me.zachary.historygui.player.Player target, Runnable runnable, Boolean sort, Consumer<InventoryClickEvent> sortClick){
         return (type, inventory) -> {
             switch (type) {
                 case CLOSE_BUTTON:

@@ -18,7 +18,7 @@ public class EditGui {
         this.plugin = plugin;
     }
 
-    public void openEditGui(Player player, OfflinePlayer target, String tableName, String reason, int id){
+    public void openEditGui(Player player, me.zachary.historygui.player.Player target, String tableName, String reason, int id){
         ZMenu editGui = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Edit.Title name"), 1);
         editGui.setAutomaticPaginationEnabled(false);
 

@@ -27,8 +27,8 @@ public class KickGui {
         this.plugin = plugin;
     }
 
-    public void openKickInventory(Player player, OfflinePlayer target){
-        ZMenu kickGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Kick.Title name").replace("{target}", target.getName()), plugin.getGuiConfig().getInt("Gui.Kick.Row") + 2);
+    public void openKickInventory(Player player, me.zachary.historygui.player.Player target){
+        ZMenu kickGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Kick.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Kick.Row") + 2);
         kickGUI.setAutomaticPaginationEnabled(true);
         kickGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
@@ -50,7 +50,7 @@ public class KickGui {
             int slot = 10;
             int page = 0;
             try (PreparedStatement st = Database.get().prepareStatement(query)) {
-                st.setString(1, String.valueOf(target.getUniqueId()));
+                st.setString(1, String.valueOf(target.getUUID()));
                 try (ResultSet rs = st.executeQuery()) {
                     while (rs.next()) {
                         List<String> replace = new ArrayList<>();
@@ -107,7 +107,7 @@ public class KickGui {
                     if(kickGUI.getButton(10) == null){
                         ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
                                 .name(plugin.getGuiConfig().getString("Empty punishment button.Name"))
-                                .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getName(), "{category}", "kick"))
+                                .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getPlayerName(), "{category}", "kick"))
                                 .build());
                         kickGUI.setButton(13, emptyButton);
                     }

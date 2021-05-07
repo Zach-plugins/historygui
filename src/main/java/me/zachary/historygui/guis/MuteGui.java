@@ -28,8 +28,8 @@ public class MuteGui {
         this.plugin = plugin;
     }
 
-    public void openMuteInventory(Player player, OfflinePlayer target){
-        ZMenu muteGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Mute.Title name").replace("{target}", target.getName()), plugin.getGuiConfig().getInt("Gui.Mute.Row") + 2);
+    public void openMuteInventory(Player player, me.zachary.historygui.player.Player target){
+        ZMenu muteGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Mute.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Mute.Row") + 2);
         muteGUI.setAutomaticPaginationEnabled(true);
         muteGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
@@ -51,7 +51,7 @@ public class MuteGui {
             int slot = 10;
             int page = 0;
             try (PreparedStatement st = Database.get().prepareStatement(query)) {
-                st.setString(1, String.valueOf(target.getUniqueId()));
+                st.setString(1, String.valueOf(target.getUUID()));
                 try (ResultSet rs = st.executeQuery()) {
                     while (rs.next()) {
                         List<String> replace = new ArrayList<>();
@@ -133,7 +133,7 @@ public class MuteGui {
                     if(muteGUI.getButton(10) == null){
                         ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
                                 .name(plugin.getGuiConfig().getString("Empty punishment button.Name"))
-                                .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getName(), "{category}", "mute"))
+                                .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getPlayerName(), "{category}", "mute"))
                                 .build());
                         muteGUI.setButton(13, emptyButton);
                     }
