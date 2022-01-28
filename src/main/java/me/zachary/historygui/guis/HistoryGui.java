@@ -18,12 +18,16 @@ public class HistoryGui {
         this.plugin = plugin;
     }
 
-    public Inventory getHistoryInventory(Player player, me.zachary.historygui.player.Player target){
+    public Inventory getHistoryInventory(Player player, me.zachary.historygui.player.Player target) {
+        return getHistoryInventory(player, target, false);
+    }
+
+    public Inventory getHistoryInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
         ZMenu historyGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Main.Title name").replace("{target}", target.getPlayerName()), 3);
         historyGUI.setAutomaticPaginationEnabled(true);
         historyGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             new BrowseGui(plugin).openBrowseGui(player);
-        }, null, null));
+        }, null, fromCommand, null));
         GuiUtils.setGlass(historyGUI, 0);
 
 

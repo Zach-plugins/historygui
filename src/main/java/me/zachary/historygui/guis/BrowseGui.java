@@ -63,10 +63,9 @@ public class BrowseGui {
     }
 
     public ItemStack getHeadItemDisplay(me.zachary.historygui.player.Player op) {
-        ItemStack item = new ItemStack(SkullUtils.getSkull(op.getUUID()).getType(), 1, (short) 3);
+        ItemStack item = SkullUtils.getSkull(op.getUUID());
         SkullMeta pSkull = (SkullMeta) item.getItemMeta();
         pSkull.setDisplayName(ChatUtils.colorCode("&7" + op.getPlayerName()));
-        pSkull.setOwner(op.getPlayerName());
         item.setItemMeta(pSkull);
         return item;
     }

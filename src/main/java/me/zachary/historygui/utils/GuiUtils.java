@@ -57,10 +57,14 @@ public class GuiUtils {
     }
 
     public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, me.zachary.historygui.player.Player target, Runnable runnable, Boolean sort, Consumer<InventoryClickEvent> sortClick){
+        return getPaginationButtonBuilder(player, target, runnable, sort, false, sortClick);
+    }
+
+    public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, me.zachary.historygui.player.Player target, Runnable runnable, Boolean sort, Boolean checkPlayer, Consumer<InventoryClickEvent> sortClick){
         return (type, inventory) -> {
             switch (type) {
                 case CLOSE_BUTTON:
-                    if(runnable == null){
+                    if(runnable == null || checkPlayer){
                         return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Item")).parseItem())
                                 .name(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Name"))
                                 .build()

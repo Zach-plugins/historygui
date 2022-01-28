@@ -42,15 +42,13 @@ public class HistoryCommand implements CommandExecutor {
             return true;
         }
 
-        System.out.println(plugin.getPlayerManager().getPlayers().size());
-
         me.zachary.historygui.player.Player target = plugin.getPlayerManager().getPlayers().values().stream().filter(player1 -> player1.getPlayerName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
         if(target == null){
             MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("Player not found"));
             return true;
         }
 
-        player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+        player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, true));
 
         return false;
     }

@@ -17,7 +17,7 @@ plugins {
 apply plugin: "com.github.johnrengelman.shadow"
 
 group = 'me.zachary'
-version = '1.0.5'
+version = '1.1.0'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -39,9 +39,9 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT'
+    compileOnly 'org.spigotmc:spigot-api:1.18.1-R0.1-SNAPSHOT'
     compileOnly 'com.gitlab.ruany:LiteBansAPI:0.3.4'
-    compile ('me.zachary:ZachCore:0.7.23') {
+    compile ('me.zachary:ZachCore:0.7.25') {
         exclude group: 'org.codemc.worldguardwrapper', module: 'worldguardwrapper'
     }
 }
