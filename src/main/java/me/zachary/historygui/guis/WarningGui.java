@@ -28,10 +28,14 @@ public class WarningGui {
     }
 
     public void openWarningInventory(Player player, me.zachary.historygui.player.Player target){
+        openWarningInventory(player, target, false);
+    }
+
+    public void openWarningInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
         ZMenu warningGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Warning.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Warning.Row") + 2);
         warningGUI.setAutomaticPaginationEnabled(true);
         warningGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
-            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, fromCommand));
         }, sort, inventoryClickEvent -> {
             sort = !sort;
             Bukkit.getScheduler().runTask(plugin, () -> {

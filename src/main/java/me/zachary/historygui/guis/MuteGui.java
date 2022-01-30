@@ -29,10 +29,14 @@ public class MuteGui {
     }
 
     public void openMuteInventory(Player player, me.zachary.historygui.player.Player target){
+        openMuteInventory(player, target, false);
+    }
+
+    public void openMuteInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
         ZMenu muteGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Mute.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Mute.Row") + 2);
         muteGUI.setAutomaticPaginationEnabled(true);
         muteGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
-            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, fromCommand));
         }, sort, inventoryClickEvent -> {
             sort = !sort;
             Bukkit.getScheduler().runTask(plugin, () -> {

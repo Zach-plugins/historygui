@@ -27,11 +27,15 @@ public class KickGui {
         this.plugin = plugin;
     }
 
-    public void openKickInventory(Player player, me.zachary.historygui.player.Player target){
+    public void openKickInventory(Player player, me.zachary.historygui.player.Player target) {
+        openKickInventory(player, target, false);
+    }
+
+    public void openKickInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
         ZMenu kickGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Kick.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Kick.Row") + 2);
         kickGUI.setAutomaticPaginationEnabled(true);
         kickGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
-            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, fromCommand));
         }, sort, inventoryClickEvent -> {
             sort = !sort;
             Bukkit.getScheduler().runTask(plugin, () -> {

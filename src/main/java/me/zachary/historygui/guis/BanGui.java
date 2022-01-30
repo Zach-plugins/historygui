@@ -28,11 +28,15 @@ public class BanGui {
         this.plugin = plugin;
     }
 
-    public void openBanInventory(Player player, me.zachary.historygui.player.Player target){
+    public void openBanInventory(Player player, me.zachary.historygui.player.Player target) {
+        openBanInventory(player, target, false);
+    }
+
+    public void openBanInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
         ZMenu banGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Ban.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Ban.Row") + 2);
         banGUI.setAutomaticPaginationEnabled(true);
         banGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
-            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target));
+            player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, fromCommand));
         }, sort, inventoryClickEvent -> {
             sort = !sort;
             Bukkit.getScheduler().runTask(plugin, () -> {
