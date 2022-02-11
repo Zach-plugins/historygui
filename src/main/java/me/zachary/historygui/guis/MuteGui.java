@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -95,7 +96,7 @@ public class MuteGui {
                         int id = rs.getInt("id");
                         String reason = rs.getString("reason");
                         ZButton banButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Mute.Icon")).parseItem())
-                                .name(plugin.getGuiConfig().getString("Gui.Mute.Icon name").replace("{time}", new Date(rs.getLong("time")).toString()))
+                                .name(plugin.getGuiConfig().getString("Gui.Mute.Icon name").replace("{time}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time")))))
                                 .lore(LoreUtils.getLore("Gui.Mute.Content", replace, replacement, remove, duration))
                                 .build()).withListener(inventoryClickEvent -> {
                                     if(plugin.getConfig().getBoolean("Allow edit punishment") && player.hasPermission("historygui.edit.mute"))
