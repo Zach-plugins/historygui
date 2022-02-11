@@ -171,3 +171,6 @@ Empty punishment button:
   Lore:
     - "&a{player} doesn't"
     - "&ahave any {category}."
+
+
+Date fomat: "YYYY-MM-dd HH:mm:ss"
