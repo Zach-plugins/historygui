@@ -82,7 +82,7 @@ public class BanGui {
                             remove.addAll(LoreUtils.getLore("Sanction remove.true", rRemove, rrRemove, null, null));
                         }
                         replace.add("{duration}");
-                        if(rs.getLong("until") == -1){
+                        if(rs.getLong("until") == -1 || rs.getLong("until") == 0){
                             duration.addAll(plugin.getGuiConfig().getStringList("Sanction duration.permanent"));
                         }else{
                             List<String> rDuration = new ArrayList<>();
