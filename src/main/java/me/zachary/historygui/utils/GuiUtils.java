@@ -126,4 +126,22 @@ public class GuiUtils {
             }
         };
     }
+
+    public static String getDuration(long time){
+        int seconds = (int) (time / 1000);
+        if(seconds <= 60)
+            return seconds + " seconds";
+        else if(seconds <= 3600)
+            return (seconds / 60) + " minutes";
+        else if(seconds <= 86400)
+            return (seconds / 3600) + " hours";
+        else if(seconds <= 604800)
+            return (seconds / 86400) + " days";
+        else if(seconds <= 2419200)
+            return (seconds / 604800) + " weeks";
+        else if(seconds <= 29030400)
+            return (seconds / 2419200) + " months";
+        else
+            return (seconds / 29030400) + " years";
+    }
 }

@@ -88,7 +88,7 @@ public class BanGui {
                             List<String> rDuration = new ArrayList<>();
                             List<String> rrDuration = new ArrayList<>();
                             rDuration.add("{time}");
-                            rrDuration.add(TimerBuilder.getFormatLongDays(rs.getLong("until") - rs.getLong("time")));
+                            rrDuration.add(GuiUtils.getDuration(rs.getLong("until") - rs.getLong("time")));
                             rDuration.add("{expire}");
                             rrDuration.add(new Date(rs.getLong("until")).toString());
                             duration.addAll(LoreUtils.getLore("Sanction duration.not permanent", rDuration, rrDuration, null, null));
