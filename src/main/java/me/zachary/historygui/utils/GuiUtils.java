@@ -70,6 +70,8 @@ public class GuiUtils {
                                 .build()
                         ).withListener(event -> {
                             event.getWhoClicked().closeInventory();
+                            if(target != null && plugin.getGuiConfig().getString("Gui.Pagination.Close button.Command") != null)
+                                player.performCommand(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Command").replace("{target}", target.getPlayerName()));
                         });
                     }else{
                         return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Back button.Item")).parseItem())

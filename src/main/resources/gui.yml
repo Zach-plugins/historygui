@@ -111,6 +111,7 @@ Gui:
     Close button:
       Item: REDSTONE
       Name: "&c&lClose menu"
+      Command: null
     Previous button:
       Item: ARROW
       Name: "&a&l\u2190 Previous Page"
