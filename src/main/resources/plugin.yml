@@ -1,5 +1,5 @@
 name: Historygui
-version: @version@
+version: ${version}
 main: me.zachary.historygui.Historygui
 api-version: 1.13
 authors: [ Zach_FR ]
