@@ -37,13 +37,18 @@ Gui:
       Icon: "REDSTONE_BLOCK"
       Name: "&4Delete punishment"
       Lore:
-        - "&7This will &4delete &7punishment"
+        - "&7This will &4&l&ndelete&7 punishment"
     Edit:
       Icon: "OAK_SIGN"
       Name: "&4Edit reason"
       Lore:
         - "&7Click to edit reason"
         - "&6Current reason: {reason}"
+    Remove:
+        Icon: "BARRIER"
+        Name: "&cRemove punishment"
+        Lore:
+            - "&7This will &cremove &7punishment"
   Ban:
     Title name: "{target}'s bans"
     Icon: "RED_WOOL"

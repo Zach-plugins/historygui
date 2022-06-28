@@ -26,24 +26,33 @@ public class EditGui {
         .name(plugin.getGuiConfig().getString("Gui.Edit.Edit.Name"))
         .lore(LoreUtils.getLore("Gui.Edit.Edit.Lore", "{reason}", reason))
         .build()).withListener(inventoryClickEvent -> {
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                player.closeInventory();
-            });
+            Bukkit.getScheduler().runTask(plugin, player::closeInventory);
             PunishmentUtils.editPunishment(plugin, player, tableName, id);
+        });
+
+        ZButton removePunishment = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Remove.Icon")).parseItem())
+        .name(plugin.getGuiConfig().getString("Gui.Edit.Remove.Name"))
+        .lore(plugin.getGuiConfig().getStringList("Gui.Edit.Remove.Lore"))
+        .build()).withListener(inventoryClickEvent -> {
+            Bukkit.getScheduler().runTask(plugin, player::closeInventory);
+            PunishmentUtils.removePunishment(plugin, player, target, tableName, id);
         });
 
         ZButton deleteButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Delete.Icon")).parseItem())
                 .name(plugin.getGuiConfig().getString("Gui.Edit.Delete.Name"))
                 .lore(plugin.getGuiConfig().getStringList("Gui.Edit.Delete.Lore"))
                 .build()).withListener(inventoryClickEvent -> {
-            Bukkit.getScheduler().runTask(plugin, () -> {
-                player.closeInventory();
-            });
+            Bukkit.getScheduler().runTask(plugin, player::closeInventory);
             PunishmentUtils.deletePunishment(plugin, player, tableName, id);
         });
 
-        editGui.setButton(3, editReasonButton);
-        editGui.setButton(5, deleteButton);
+        if(player.hasPermission("historygui.edit.reason"))
+            editGui.setButton(2, editReasonButton);
+        if(player.hasPermission("historygui.edit.remove"))
+            editGui.setButton(4, removePunishment);
+        if(player.hasPermission("historygui.edit.delete"))
+            editGui.setButton(6, deleteButton);
+
 
         player.openInventory(editGui.getInventory());
     }
