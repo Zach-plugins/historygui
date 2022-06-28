@@ -77,6 +77,8 @@ public class MuteGui {
                             List<String> rrRemove = new ArrayList<>();
                             rRemove.add("{remover}");
                             rrRemove.add(rs.getString("removed_by_name"));
+                            rRemove.add("{reason}");
+                            rrRemove.add(rs.getString("removed_by_reason"));
                             rRemove.add("{time}");
                             rrRemove.add(rs.getString("removed_by_date"));
                             remove.addAll(LoreUtils.getLore("Sanction remove.true", rRemove, rrRemove, null, null));

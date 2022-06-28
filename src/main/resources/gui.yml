@@ -143,6 +143,7 @@ Gui:
 Sanction remove:
   true:
     - "&6Removed by: &e{remover}"
+    - "&6Remove reason: &e{reason}"
     - "&6Remove date: &e{time}"
   false:
     - "&6Punishment not remove"
