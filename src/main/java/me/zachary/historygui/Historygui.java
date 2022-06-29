@@ -2,6 +2,7 @@ package me.zachary.historygui;
 
 import me.zachary.historygui.commands.HistoryCommand;
 import me.zachary.historygui.commands.StaffHistoryCommand;
+import me.zachary.historygui.listeners.JoinListener;
 import me.zachary.historygui.player.PlayerManager;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.config.Config;
@@ -33,6 +34,8 @@ public final class Historygui extends ZachCorePlugin {
         new StaffHistoryCommand(this);
 
         playerManager = new PlayerManager(this);
+
+        new JoinListener(this);
 
         Metrics metrics = new Metrics(this, 10290);
 
