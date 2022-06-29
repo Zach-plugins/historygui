@@ -199,11 +199,11 @@ Sort staff placeholder:
   Mute: "Mute"
   Warning: "Warning"
   Content:
-    - "{all}"
-    - "{ban}"
-    - "{mute}"
-    - "{warning}"
-    - "{kick}"
+    - "{all} ({all_count})"
+    - "{ban} ({ban_count})"
+    - "{mute} ({mute_count})"
+    - "{warning} ({warning_count})"
+    - "{kick} ({kick_count})"
 
 # Empty punishment button, show in middle of gui when player doesn't have
 # punishment in this category.

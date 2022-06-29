@@ -57,6 +57,12 @@ public class StaffHistoryGui {
 	private Boolean sort = true;
 	private Type type = Type.All;
 
+	private int all = 0;
+	private int ban = 0;
+	private int mute = 0;
+	private int warning = 0;
+	private int kick = 0;
+
 	public StaffHistoryGui(Historygui plugin, Player player, OfflinePlayer target) {
 		this.plugin = plugin;
 		this.player = player;
@@ -66,35 +72,6 @@ public class StaffHistoryGui {
 	public Inventory getInventory() {
 		ZMenu historyGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Staff.Title name").replace("{name}", String.valueOf((target.getName() != null ? target.getName() : target.getUniqueId()))), 5);
 		historyGUI.setAutomaticPaginationEnabled(true);
-		historyGUI.setPaginationButtonBuilder(GuiUtils.getStaffPaginationButtonBuilder(player, target, () -> {
-
-		}, sort, inventoryClickEvent -> {
-			sort = !sort;
-			Bukkit.getScheduler().runTask(plugin, () -> {
-				player.closeInventory();
-				player.openInventory(getInventory());
-			});
-		}, type.getName(), inventoryClickEvent -> {
-			int ordinal = type.ordinal();
-			if(inventoryClickEvent.getClick().isLeftClick()){
-				if(ordinal == 0) {
-					ordinal = Type.values().length - 1;
-				} else {
-					ordinal--;
-				}
-			} else if(inventoryClickEvent.getClick().isRightClick()) {
-				if(ordinal == Type.values().length - 1) {
-					ordinal = 0;
-				} else {
-					ordinal++;
-				}
-			}
-			type = Type.values()[ordinal];
-			Bukkit.getScheduler().runTask(plugin, () -> {
-				player.closeInventory();
-				player.openInventory(getInventory());
-			});
-		}));
 		GuiUtils.setGlass(historyGUI, 0);
 
 		// Get all punishment from that staff.
@@ -131,7 +108,27 @@ public class StaffHistoryGui {
 				try (ResultSet rs = st.executeQuery()) {
 					int slot = 10;
 					int page = 0;
+					if(type.equals(Type.All)) {
+						all = 0;
+						ban = 0;
+						mute = 0;
+						warning = 0;
+						kick = 0;
+					}
 					while(rs.next()) {
+						if(type.equals(Type.All)){
+							all++;
+							if(rs.getString("type").equals("Ban")) {
+								ban++;
+							} else if(rs.getString("type").equals("Mute")) {
+								mute++;
+							} else if(rs.getString("type").equals("Warning")) {
+								warning++;
+							} else if(rs.getString("type").equals("Kick")) {
+								kick++;
+							}
+						}
+
 						List<String> replace = new ArrayList<>();
 						List<String> replacement = new ArrayList<>();
 						List<String> remove = new ArrayList<>();
@@ -198,6 +195,34 @@ public class StaffHistoryGui {
 							GuiUtils.setGlass(historyGUI, page);
 						}
 					}
+					historyGUI.setPaginationButtonBuilder(GuiUtils.getStaffPaginationButtonBuilder(player, target, sort, inventoryClickEvent -> {
+						sort = !sort;
+						Bukkit.getScheduler().runTask(plugin, () -> {
+							player.closeInventory();
+							player.openInventory(getInventory());
+						});
+					}, type.getName(), inventoryClickEvent -> {
+						int ordinal = type.ordinal();
+						if(inventoryClickEvent.getClick().isLeftClick()){
+							if(ordinal == 0) {
+								ordinal = Type.values().length - 1;
+							} else {
+								ordinal--;
+							}
+						} else if(inventoryClickEvent.getClick().isRightClick()) {
+							if(ordinal == Type.values().length - 1) {
+								ordinal = 0;
+							} else {
+								ordinal++;
+							}
+						}
+						type = Type.values()[ordinal];
+						Bukkit.getScheduler().runTask(plugin, () -> {
+							player.closeInventory();
+							player.openInventory(getInventory());
+						});
+					}, all, ban, mute, warning, kick));
+					historyGUI.refreshInventory(player);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

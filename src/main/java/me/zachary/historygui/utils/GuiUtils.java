@@ -130,7 +130,7 @@ public class GuiUtils {
         };
     }
 
-    public static ZPaginationButtonBuilder getStaffPaginationButtonBuilder(Player player, OfflinePlayer target, Runnable runnable, Boolean sort,  Consumer<InventoryClickEvent> sortClick, String sortType, Consumer<InventoryClickEvent> sortTypeClick){
+    public static ZPaginationButtonBuilder getStaffPaginationButtonBuilder(Player player, OfflinePlayer target, Boolean sort,  Consumer<InventoryClickEvent> sortClick, String sortType, Consumer<InventoryClickEvent> sortTypeClick, int all, int ban, int mute, int warning, int kick){
         return (type, inventory) -> {
             switch (type) {
                 case CLOSE_BUTTON:
@@ -177,7 +177,7 @@ public class GuiUtils {
                 case CUSTOM_4:
                     return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Item")).parseItem())
                             .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Name"))
-                            .lore(getStaffSortTypeLore("Sort staff placeholder.Content", sortType))
+                            .lore(getStaffSortTypeLore("Sort staff placeholder.Content", sortType, all, ban, mute, warning, kick))
                             .build()
                     ).withListener(sortTypeClick::accept);
                 case CUSTOM_1:
@@ -189,7 +189,7 @@ public class GuiUtils {
         };
     }
 
-    private static List<String> getStaffSortTypeLore(String path, String type){
+    private static List<String> getStaffSortTypeLore(String path, String type, int all, int ban, int mute, int warning, int kick){
         List<String> lore = new ArrayList<>();
 
         for(String line : plugin.getGuiConfig().getStringList(path)){
@@ -197,7 +197,13 @@ public class GuiUtils {
                     .replace("{ban}", StaffHistoryGui.Type.Ban.getName())
                     .replace("{mute}", StaffHistoryGui.Type.Mute.getName())
                     .replace("{kick}", StaffHistoryGui.Type.Kick.getName())
-                    .replace("{warning}", StaffHistoryGui.Type.Warning.getName());
+                    .replace("{warning}", StaffHistoryGui.Type.Warning.getName())
+                    .replace("{all_count}", String.valueOf(all))
+                    .replace("{ban_count}", String.valueOf(ban))
+                    .replace("{mute_count}", String.valueOf(mute))
+                    .replace("{warning_count}", String.valueOf(kick))
+                    .replace("{kick_count}", String.valueOf(kick))
+            ;
             if(line.contains(type))
                 lore.add(plugin.getGuiConfig().getString("Sort staff placeholder.Selected") + line);
             else
