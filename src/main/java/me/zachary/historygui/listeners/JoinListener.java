@@ -21,6 +21,8 @@ public class JoinListener implements Listener {
 		if(player.hasPlayedBefore())
 			return;
 
+		if(plugin.getPlayerManager().getPlayers().containsKey(player.getName()))
+			return;
 		plugin.getPlayerManager().addPlayer(new me.zachary.historygui.player.Player(player.getName(), player.getUniqueId()));
 	}
 }
