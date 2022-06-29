@@ -98,7 +98,7 @@ public class BanGui {
 
                         String reason = rs.getString("reason");
                         int id = rs.getInt("id");
-                        ZButton banButton = new ZButton(new ItemBuilder(rs.getString("active").equals("1") ? XMaterial.GREEN_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
+                        ZButton banButton = new ZButton(new ItemBuilder(rs.getString("active").equals("1") ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
                         .name(plugin.getGuiConfig().getString("Gui.Ban.Icon name").replace("{time}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time")))))
                         .lore(LoreUtils.getLore("Gui.Ban.Content", replace, replacement, remove, duration))
                         .build()).withListener(inventoryClickEvent -> {

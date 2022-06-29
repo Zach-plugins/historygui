@@ -177,7 +177,7 @@ public class StaffHistoryGui {
 						}
 
 						boolean active = rs.getString("active").equals("1");
-						ZButton button = new ZButton(new ItemBuilder(active ? XMaterial.GREEN_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
+						ZButton button = new ZButton(new ItemBuilder(active ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
 								.name(plugin.getGuiConfig().getString("Gui.Staff.Icon name")
 										.replace("{date}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time"))))
 										.replace("{type}", rs.getString("type"))
