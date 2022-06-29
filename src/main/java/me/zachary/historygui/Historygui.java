@@ -1,16 +1,19 @@
 package me.zachary.historygui;
 
 import me.zachary.historygui.commands.HistoryCommand;
+import me.zachary.historygui.commands.StaffHistoryCommand;
 import me.zachary.historygui.player.PlayerManager;
 import me.zachary.zachcore.ZachCorePlugin;
 import me.zachary.zachcore.config.Config;
 import me.zachary.zachcore.guis.ZachGUI;
 import me.zachary.zachcore.utils.Metrics;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
 public final class Historygui extends ZachCorePlugin {
+    private static Historygui instance;
     public static ZachGUI zachGUI;
     private File guiFile;
     private File messageFile;
@@ -21,11 +24,13 @@ public final class Historygui extends ZachCorePlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         zachGUI = new ZachGUI(this);
         reloadGuiConfig();
         loadMessageConfig();
         saveDefaultConfig();
         new HistoryCommand(this);
+        new StaffHistoryCommand(this);
 
         playerManager = new PlayerManager(this);
 
@@ -37,6 +42,10 @@ public final class Historygui extends ZachCorePlugin {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+    }
+
+    public static Historygui getInstance() {
+        return instance;
     }
 
     public static ZachGUI getGUI() {

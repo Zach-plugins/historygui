@@ -3,10 +3,13 @@ version: ${version}
 main: me.zachary.historygui.Historygui
 api-version: 1.13
 authors: [ Zach_FR ]
-softdepend: [ LiteBans ]
-description: A history gui for liteban
+depend: [ LiteBans ]
+description: A history gui for litebans
 
 commands:
   check:
     description: Get history punishment of player
     aliases: [c, history, punishments]
+  staffhistory:
+    description: Get history punishment given by a staff member
+    aliases: [staffhist, shist, shistory]

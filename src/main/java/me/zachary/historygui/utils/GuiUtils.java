@@ -1,6 +1,7 @@
 package me.zachary.historygui.utils;
 
 import me.zachary.historygui.Historygui;
+import me.zachary.historygui.guis.StaffHistoryGui;
 import me.zachary.zachcore.guis.ZMenu;
 import me.zachary.zachcore.guis.buttons.ZButton;
 import me.zachary.zachcore.guis.pagination.ZPaginationButtonBuilder;
@@ -14,6 +15,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -125,6 +128,83 @@ public class GuiUtils {
                     return null;
             }
         };
+    }
+
+    public static ZPaginationButtonBuilder getStaffPaginationButtonBuilder(Player player, OfflinePlayer target, Runnable runnable, Boolean sort,  Consumer<InventoryClickEvent> sortClick, String sortType, Consumer<InventoryClickEvent> sortTypeClick){
+        return (type, inventory) -> {
+            switch (type) {
+                case CLOSE_BUTTON:
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Name"))
+                            .build()
+                    ).withListener(event -> {
+                        event.getWhoClicked().closeInventory();
+                    });
+
+                case PREV_BUTTON:
+                    if (inventory.getCurrentPage() > 0) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Name"))
+                            .lore(LoreUtils.getLore("Gui.Pagination.Previous button.Lore", "{page}", String.valueOf(inventory.getCurrentPage())))
+                            .build()
+                    ).withListener(event -> {
+                        event.setCancelled(true);
+                        inventory.previousPage(event.getWhoClicked());
+                    });
+                    else return null;
+
+                case CURRENT_BUTTON:
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Name").replace("{currentpage}", String.valueOf(inventory.getCurrentPage() + 1)).replace("{maxpage}", String.valueOf(inventory.getMaxPage())))
+                            .lore(LoreUtils.getLore("Gui.Pagination.Current button.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 1)))
+                            .build()
+                    ).withListener(event -> event.setCancelled(true));
+
+                case NEXT_BUTTON:
+                    if (inventory.getCurrentPage() < inventory.getMaxPage() - 2) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Name"))
+                            .lore(LoreUtils.getLore("Gui.Pagination.Next button.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 2)))
+                            .build()
+                    ).withListener(event -> {
+                        event.setCancelled(true);
+                        inventory.nextPage(event.getWhoClicked());
+                    });
+                    else return null;
+                case UNASSIGNED:
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Name"))
+                            .lore(LoreUtils.getLore("Gui.Pagination.Sort button.Lore", "{sort}", sort ? plugin.getGuiConfig().getStringList("Sort placeholder.Descending") : plugin.getGuiConfig().getStringList("Sort placeholder.Ascending")))
+                            .build()).withListener(sortClick::accept);
+                case CUSTOM_4:
+                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Name"))
+                            .lore(getStaffSortTypeLore("Sort staff placeholder.Content", sortType))
+                            .build()
+                    ).withListener(sortTypeClick::accept);
+                case CUSTOM_1:
+                case CUSTOM_2:
+                case CUSTOM_3:
+                default:
+                    return null;
+            }
+        };
+    }
+
+    private static List<String> getStaffSortTypeLore(String path, String type){
+        List<String> lore = new ArrayList<>();
+
+        for(String line : plugin.getGuiConfig().getStringList(path)){
+            line = line.replace("{all}", StaffHistoryGui.Type.All.getName())
+                    .replace("{ban}", StaffHistoryGui.Type.Ban.getName())
+                    .replace("{mute}", StaffHistoryGui.Type.Mute.getName())
+                    .replace("{kick}", StaffHistoryGui.Type.Kick.getName())
+                    .replace("{warning}", StaffHistoryGui.Type.Warning.getName());
+            if(line.contains(type))
+                lore.add(plugin.getGuiConfig().getString("Sort staff placeholder.Selected") + line);
+            else
+                lore.add(plugin.getGuiConfig().getString("Sort staff placeholder.Unselected") + line);
+        }
+
+        return lore;
     }
 
     public static String getDuration(long time){

@@ -109,6 +109,20 @@ Gui:
       - "&6Reason: &e{reason}"
       - ""
       - "&7Click to edit punishment"
+  Staff:
+    Title name: "Punishment given by {name}"
+    Icon name: "&6{date}"
+    Content:
+      - ""
+      - "&6Type: &e{type}"
+      - "&6Date: &e{date}"
+      - "&6Server: &e{server}"
+      - "&6Reason: &e{reason}"
+      - "&6Player: &e{target}"
+      - ""
+      - "{remove}"
+      - ""
+      - "{duration}"
   Pagination:
     Back button:
       Item: REDSTONE
@@ -141,6 +155,12 @@ Gui:
       Lore:
         - "&7Click to sort punishment by date"
         - "{sort}"
+    Sort type button:
+      Item: CLOCK
+      Name: "&aSort punishment"
+      Lore:
+        - "&7Click to sort punishment by type"
+        - "{sort}"
 
 
 
@@ -169,6 +189,21 @@ Sort placeholder:
   Descending:
     - "&8➔ &7Ascending"
     - "&2➔ &aDescending"
+
+Sort staff placeholder:
+  Selected: "&2➔ &a"
+  Unselected: "&8➔ &7"
+  All: "All"
+  Ban: "Ban"
+  Kick: "Kick"
+  Mute: "Mute"
+  Warning: "Warning"
+  Content:
+    - "{all}"
+    - "{ban}"
+    - "{mute}"
+    - "{warning}"
+    - "{kick}"
 
 # Empty punishment button, show in middle of gui when player doesn't have
 # punishment in this category.
