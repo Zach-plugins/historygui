@@ -42,6 +42,13 @@ public class PlayerManager {
         players.put(player.getPlayerName(), player);
     }
 
+    public Player getPlayer(UUID uuid) {
+        for(Player player : players.values())
+            if(player.getUUID().equals(uuid))
+                return player;
+        return null;
+    }
+
     public HashMap<String, Player> getPlayers() {
         return players;
     }

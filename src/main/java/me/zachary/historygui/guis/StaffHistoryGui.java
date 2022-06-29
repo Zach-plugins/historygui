@@ -143,7 +143,7 @@ public class StaffHistoryGui {
 						replace.add("{type}");
 						replacement.add(rs.getString("type"));
 						replace.add("{target}");
-						String targetName = Bukkit.getOfflinePlayer(UUID.fromString(rs.getString("uuid"))).getName();
+						String targetName = plugin.getPlayerManager().getPlayer(UUID.fromString(rs.getString("uuid"))).getPlayerName();
 						replacement.add(targetName != null ? targetName : rs.getString("uuid"));
 						replace.add("{server}");
 						replacement.add(rs.getString("server_origin") != null ? rs.getString("server_origin") : "Server");
