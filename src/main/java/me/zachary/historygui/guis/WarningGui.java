@@ -71,7 +71,7 @@ public class WarningGui {
 
                         String reason = rs.getString("reason");
                         int id = rs.getInt("id");
-                        ZButton banButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Warning.Icon")).parseItem())
+                        ZButton banButton = new ZButton(new ItemBuilder(rs.getString("active").equals("1") ? XMaterial.GREEN_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
                                 .name(plugin.getGuiConfig().getString("Gui.Warning.Icon name").replace("{time}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time")))))
                                 .lore(LoreUtils.getLore("Gui.Warning.Content", replace, replacement, remove, duration))
                                 .build()).withListener(inventoryClickEvent -> {
