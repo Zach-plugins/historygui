@@ -12,4 +12,4 @@ commands:
     aliases: [c, history, punishments]
   staffhistory:
     description: Get history punishment given by a staff member
-    aliases: [staffhist, shist, shistory]
+    aliases: [staffhist, shist, shistory, staffc, staffcheck]
