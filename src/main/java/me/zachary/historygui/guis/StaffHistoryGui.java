@@ -140,8 +140,8 @@ public class StaffHistoryGui {
 						replace.add("{type}");
 						replacement.add(rs.getString("type"));
 						replace.add("{target}");
-						String targetName = plugin.getPlayerManager().getPlayer(UUID.fromString(rs.getString("uuid"))).getPlayerName();
-						replacement.add(targetName != null ? targetName : rs.getString("uuid"));
+						me.zachary.historygui.player.Player targetPlayer = plugin.getPlayerManager().getPlayer(UUID.fromString(rs.getString("uuid")));
+						replacement.add(targetPlayer != null ? targetPlayer.getPlayerName() : rs.getString("uuid"));
 						replace.add("{server}");
 						replacement.add(rs.getString("server_origin") != null ? rs.getString("server_origin") : "Server");
 						replace.add("{reason}");
