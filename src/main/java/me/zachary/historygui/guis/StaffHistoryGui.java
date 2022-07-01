@@ -183,7 +183,6 @@ public class StaffHistoryGui {
 								.build());
 
 						historyGUI.setButton(page, slot, button);
-						historyGUI.refreshInventory(player);
 
 						if(slot == 16 || slot == 25)
 							slot += 3;
@@ -198,7 +197,6 @@ public class StaffHistoryGui {
 					historyGUI.setPaginationButtonBuilder(GuiUtils.getStaffPaginationButtonBuilder(player, target, sort, inventoryClickEvent -> {
 						sort = !sort;
 						Bukkit.getScheduler().runTask(plugin, () -> {
-							player.closeInventory();
 							player.openInventory(getInventory());
 						});
 					}, type.getName(), inventoryClickEvent -> {
@@ -218,11 +216,13 @@ public class StaffHistoryGui {
 						}
 						type = Type.values()[ordinal];
 						Bukkit.getScheduler().runTask(plugin, () -> {
-							player.closeInventory();
 							player.openInventory(getInventory());
 						});
 					}, all, ban, mute, warning, kick));
-					historyGUI.refreshInventory(player);
+				} finally {
+					Bukkit.getScheduler().runTask(plugin, () -> {
+						player.openInventory(historyGUI.getInventory());
+					});
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();

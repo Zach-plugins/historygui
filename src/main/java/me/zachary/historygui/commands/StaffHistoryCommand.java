@@ -42,7 +42,8 @@ public class StaffHistoryCommand implements CommandExecutor {
 			return true;
 		}
 
-		player.openInventory(new StaffHistoryGui(plugin, player, target).getInventory());
+		MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("Loading staff history").replace("{target}", target.getName()));
+		new StaffHistoryGui(plugin, player, target).getInventory();
 
 		return false;
 	}
