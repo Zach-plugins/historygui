@@ -37,8 +37,13 @@ public class HistoryCommand implements CommandExecutor {
             return false;
         }
 
-        if(args.length < 1){
+        if(plugin.getConfig().getBoolean("Allow browser gui") && args.length < 1){
             new BrowseGui(plugin).openBrowseGui(player);
+            return true;
+        }
+
+        if(args.length < 1){
+            MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("History command usage"));
             return true;
         }
 

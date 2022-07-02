@@ -19,6 +19,9 @@ Allow edit punishment: true
 # Should we only show offline players in browser gui?
 Offline player: true
 
+# Allow browser gui
+Allow browser gui: true
+
 # Should we load player head skin in browser gui (May cause some lag if you enable)?
 Player head:
   Enable: true
