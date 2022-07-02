@@ -17,6 +17,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
@@ -130,7 +131,7 @@ public class GuiUtils {
         };
     }
 
-    public static ZPaginationButtonBuilder getStaffPaginationButtonBuilder(Player player, OfflinePlayer target, Boolean sort,  Consumer<InventoryClickEvent> sortClick, String sortType, Consumer<InventoryClickEvent> sortTypeClick, int all, int ban, int mute, int warning, int kick){
+    public static ZPaginationButtonBuilder getStaffPaginationButtonBuilder(Player player, UUID uuid, Boolean sort, Consumer<InventoryClickEvent> sortClick, String sortType, Consumer<InventoryClickEvent> sortTypeClick, int all, int ban, int mute, int warning, int kick){
         return (type, inventory) -> {
             switch (type) {
                 case CLOSE_BUTTON:

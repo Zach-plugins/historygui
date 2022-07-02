@@ -53,7 +53,8 @@ public class StaffHistoryGui {
 	private Historygui plugin;
 
 	private Player player;
-	private OfflinePlayer target;
+	private UUID uuid;
+	private String name;
 	private Boolean sort = true;
 	private Type type = Type.All;
 
@@ -63,14 +64,15 @@ public class StaffHistoryGui {
 	private int warning = 0;
 	private int kick = 0;
 
-	public StaffHistoryGui(Historygui plugin, Player player, OfflinePlayer target) {
+	public StaffHistoryGui(Historygui plugin, Player player, UUID uuid, String name) {
 		this.plugin = plugin;
 		this.player = player;
-		this.target = target;
+		this.uuid = uuid;
+		this.name = name;
 	}
 
 	public Inventory getInventory() {
-		ZMenu historyGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Staff.Title name").replace("{name}", String.valueOf((target.getName() != null ? target.getName() : target.getUniqueId()))), 5);
+		ZMenu historyGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Staff.Title name").replace("{name}", name), 5);
 		historyGUI.setAutomaticPaginationEnabled(true);
 		GuiUtils.setGlass(historyGUI, 0);
 
@@ -100,10 +102,10 @@ public class StaffHistoryGui {
 			}
 			try (PreparedStatement st = Database.get().prepareStatement(query + " ORDER BY time " + (sort ? "DESC" : "ASC"))) {
 				try {
-					st.setString(1, String.valueOf(target.getUniqueId()));
-					st.setString(2, String.valueOf(target.getUniqueId()));
-					st.setString(3, String.valueOf(target.getUniqueId()));
-					st.setString(4, String.valueOf(target.getUniqueId()));
+					st.setString(1, String.valueOf(uuid));
+					st.setString(2, String.valueOf(uuid));
+					st.setString(3, String.valueOf(uuid));
+					st.setString(4, String.valueOf(uuid));
 				} catch (SQLException ignored) {}
 				try (ResultSet rs = st.executeQuery()) {
 					int slot = 10;
@@ -194,7 +196,7 @@ public class StaffHistoryGui {
 							GuiUtils.setGlass(historyGUI, page);
 						}
 					}
-					historyGUI.setPaginationButtonBuilder(GuiUtils.getStaffPaginationButtonBuilder(player, target, sort, inventoryClickEvent -> {
+					historyGUI.setPaginationButtonBuilder(GuiUtils.getStaffPaginationButtonBuilder(player, uuid, sort, inventoryClickEvent -> {
 						sort = !sort;
 						Bukkit.getScheduler().runTask(plugin, () -> {
 							player.openInventory(getInventory());
