@@ -5,7 +5,6 @@ import me.zachary.historygui.Historygui;
 import me.zachary.historygui.guis.StaffHistoryGui;
 import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -42,7 +41,7 @@ public class StaffHistoryCommand implements CommandExecutor {
 		}
 
 		Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-			String query = "SELECT * FROM {history} WHERE name = ?";
+			String query = "SELECT * FROM {history} WHERE name = ? ORDER BY date DESC";
 			try (PreparedStatement st = Database.get().prepareStatement(query)){
 				st.setString(1, args[0]);
 				try (ResultSet rs = st.executeQuery()) {
