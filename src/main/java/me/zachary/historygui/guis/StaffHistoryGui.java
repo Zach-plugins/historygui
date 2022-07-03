@@ -55,7 +55,7 @@ public class StaffHistoryGui {
 	private Player player;
 	private UUID uuid;
 	private String name;
-	private Boolean sort = true;
+	private Boolean sort = false;
 	private Type type = Type.All;
 
 	private int all = 0;
@@ -100,7 +100,7 @@ public class StaffHistoryGui {
 					query = bans + " UNION " + mutes + " UNION " + warnings + " UNION " + kicks;
 					break;
 			}
-			try (PreparedStatement st = Database.get().prepareStatement(query + " ORDER BY time " + (sort ? "DESC" : "ASC"))) {
+			try (PreparedStatement st = Database.get().prepareStatement(query + " ORDER BY time " + (sort ? "ASC" : "DESC"))) {
 				try {
 					st.setString(1, String.valueOf(uuid));
 					st.setString(2, String.valueOf(uuid));
