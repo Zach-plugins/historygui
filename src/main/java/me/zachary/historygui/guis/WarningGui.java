@@ -1,13 +1,13 @@
 package me.zachary.historygui.guis;
 
+import com.zachfr.zachlibrary.library.spigui.buttons.SGButton;
+import com.zachfr.zachlibrary.library.spigui.menu.SGMenu;
+import com.zachfr.zachlibrary.library.xseries.XMaterial;
+import com.zachfr.zachlibrary.utils.ItemBuilder;
 import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.utils.GuiUtils;
 import me.zachary.historygui.utils.LoreUtils;
-import me.zachary.zachcore.guis.ZMenu;
-import me.zachary.zachcore.guis.buttons.ZButton;
-import me.zachary.zachcore.utils.items.ItemBuilder;
-import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -33,9 +33,9 @@ public class WarningGui {
     }
 
     public void openWarningInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
-        ZMenu warningGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Warning.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Warning.Row") + 2);
+        SGMenu warningGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Warning.Title name").replace("target", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Warning.Row") + 2);
         warningGUI.setAutomaticPaginationEnabled(true);
-        warningGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
+        warningGUI.setToolbarBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, fromCommand));
         }, sort, inventoryClickEvent -> {
             sort = !sort;
@@ -71,7 +71,8 @@ public class WarningGui {
 
                         String reason = rs.getString("reason");
                         int id = rs.getInt("id");
-                        ZButton banButton = new ZButton(new ItemBuilder(rs.getString("active").equals("1") ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
+                        boolean active = rs.getBoolean("active") && (rs.getLong("until") < 1 || rs.getLong("until") > System.currentTimeMillis());
+                        SGButton banButton = new SGButton(new ItemBuilder(active ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
                                 .name(plugin.getGuiConfig().getString("Gui.Warning.Icon name").replace("{time}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time")))))
                                 .lore(LoreUtils.getLore("Gui.Warning.Content", replace, replacement, remove, duration))
                                 .build()).withListener(inventoryClickEvent -> {
@@ -112,7 +113,7 @@ public class WarningGui {
                             slot++; // ?
                     }
                     if(warningGUI.getButton(10) == null){
-                        ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
+                        SGButton emptyButton = new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
                         .name(plugin.getGuiConfig().getString("Empty punishment button.Name"))
                         .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getPlayerName(), "{category}", "warning"))
                         .build());

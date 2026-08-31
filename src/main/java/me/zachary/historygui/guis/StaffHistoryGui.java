@@ -1,13 +1,13 @@
 package me.zachary.historygui.guis;
 
+import com.zachfr.zachlibrary.library.spigui.buttons.SGButton;
+import com.zachfr.zachlibrary.library.spigui.menu.SGMenu;
+import com.zachfr.zachlibrary.library.xseries.XMaterial;
+import com.zachfr.zachlibrary.utils.ItemBuilder;
 import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.utils.GuiUtils;
 import me.zachary.historygui.utils.LoreUtils;
-import me.zachary.zachcore.guis.ZMenu;
-import me.zachary.zachcore.guis.buttons.ZButton;
-import me.zachary.zachcore.utils.items.ItemBuilder;
-import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -72,7 +72,7 @@ public class StaffHistoryGui {
 	}
 
 	public Inventory getInventory() {
-		ZMenu historyGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Staff.Title name").replace("{name}", name), 5);
+		SGMenu historyGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Staff.Title name").replace("{name}", name), 5);
 		historyGUI.setAutomaticPaginationEnabled(true);
 		GuiUtils.setGlass(historyGUI, 0);
 
@@ -175,8 +175,8 @@ public class StaffHistoryGui {
 							duration.addAll(LoreUtils.getLore("Sanction duration.not permanent", rDuration, rrDuration, null, null));
 						}
 
-						boolean active = rs.getString("active").equals("1");
-						ZButton button = new ZButton(new ItemBuilder(active ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
+						boolean active = rs.getBoolean("active") && (rs.getLong("until") < 1 || rs.getLong("until") > System.currentTimeMillis());
+						SGButton button = new SGButton(new ItemBuilder(active ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
 								.name(plugin.getGuiConfig().getString("Gui.Staff.Icon name")
 										.replace("{date}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time"))))
 										.replace("{type}", rs.getString("type"))
@@ -196,7 +196,7 @@ public class StaffHistoryGui {
 							GuiUtils.setGlass(historyGUI, page);
 						}
 					}
-					historyGUI.setPaginationButtonBuilder(GuiUtils.getStaffPaginationButtonBuilder(player, uuid, sort, inventoryClickEvent -> {
+					historyGUI.setToolbarBuilder(GuiUtils.getStaffPaginationButtonBuilder(player, uuid, sort, inventoryClickEvent -> {
 						sort = !sort;
 						Bukkit.getScheduler().runTask(plugin, () -> {
 							player.openInventory(getInventory());

@@ -1,12 +1,12 @@
 package me.zachary.historygui.guis;
 
+import com.zachfr.zachlibrary.library.spigui.buttons.SGButton;
+import com.zachfr.zachlibrary.library.spigui.menu.SGMenu;
+import com.zachfr.zachlibrary.library.xseries.XMaterial;
+import com.zachfr.zachlibrary.utils.ItemBuilder;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.utils.LoreUtils;
 import me.zachary.historygui.utils.PunishmentUtils;
-import me.zachary.zachcore.guis.ZMenu;
-import me.zachary.zachcore.guis.buttons.ZButton;
-import me.zachary.zachcore.utils.items.ItemBuilder;
-import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -19,10 +19,10 @@ public class EditGui {
     }
 
     public void openEditGui(Player player, me.zachary.historygui.player.Player target, String tableName, String reason, int id){
-        ZMenu editGui = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Edit.Title name"), 1);
+        SGMenu editGui = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Edit.Title name"), 1);
         editGui.setAutomaticPaginationEnabled(false);
 
-        ZButton editReasonButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Edit.Icon")).parseItem())
+        SGButton editReasonButton = new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Edit.Icon")).parseItem())
         .name(plugin.getGuiConfig().getString("Gui.Edit.Edit.Name"))
         .lore(LoreUtils.getLore("Gui.Edit.Edit.Lore", "{reason}", reason))
         .build()).withListener(inventoryClickEvent -> {
@@ -30,7 +30,7 @@ public class EditGui {
             PunishmentUtils.editPunishment(plugin, player, tableName, id);
         });
 
-        ZButton removePunishment = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Remove.Icon")).parseItem())
+        SGButton removePunishment = new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Remove.Icon")).parseItem())
         .name(plugin.getGuiConfig().getString("Gui.Edit.Remove.Name"))
         .lore(plugin.getGuiConfig().getStringList("Gui.Edit.Remove.Lore"))
         .build()).withListener(inventoryClickEvent -> {
@@ -38,7 +38,7 @@ public class EditGui {
             PunishmentUtils.removePunishment(plugin, player, target, tableName, id);
         });
 
-        ZButton deleteButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Delete.Icon")).parseItem())
+        SGButton deleteButton = new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Edit.Delete.Icon")).parseItem())
                 .name(plugin.getGuiConfig().getString("Gui.Edit.Delete.Name"))
                 .lore(plugin.getGuiConfig().getStringList("Gui.Edit.Delete.Lore"))
                 .build()).withListener(inventoryClickEvent -> {

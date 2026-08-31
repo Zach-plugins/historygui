@@ -1,14 +1,13 @@
 package me.zachary.historygui.guis;
 
+import com.zachfr.zachlibrary.library.spigui.buttons.SGButton;
+import com.zachfr.zachlibrary.library.spigui.menu.SGMenu;
+import com.zachfr.zachlibrary.library.xseries.XMaterial;
+import com.zachfr.zachlibrary.utils.ItemBuilder;
 import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.utils.GuiUtils;
 import me.zachary.historygui.utils.LoreUtils;
-import me.zachary.zachcore.guis.ZMenu;
-import me.zachary.zachcore.guis.buttons.ZButton;
-import me.zachary.zachcore.utils.TimerBuilder;
-import me.zachary.zachcore.utils.items.ItemBuilder;
-import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -34,9 +33,9 @@ public class MuteGui {
     }
 
     public void openMuteInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
-        ZMenu muteGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Mute.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Mute.Row") + 2);
+        SGMenu muteGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Mute.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Mute.Row") + 2);
         muteGUI.setAutomaticPaginationEnabled(true);
-        muteGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
+        muteGUI.setToolbarBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, fromCommand));
         }, sort, inventoryClickEvent -> {
             sort = !sort;
@@ -97,7 +96,8 @@ public class MuteGui {
                         }
                         int id = rs.getInt("id");
                         String reason = rs.getString("reason");
-                        ZButton banButton = new ZButton(new ItemBuilder(rs.getString("active").equals("1") ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
+                        boolean active = rs.getBoolean("active") && (rs.getLong("until") < 1 || rs.getLong("until") > System.currentTimeMillis());
+                        SGButton banButton = new SGButton(new ItemBuilder(active ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
                                 .name(plugin.getGuiConfig().getString("Gui.Mute.Icon name").replace("{time}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time")))))
                                 .lore(LoreUtils.getLore("Gui.Mute.Content", replace, replacement, remove, duration))
                                 .build()).withListener(inventoryClickEvent -> {
@@ -138,7 +138,7 @@ public class MuteGui {
                             slot++; // ?
                     }
                     if(muteGUI.getButton(10) == null){
-                        ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
+                        SGButton emptyButton = new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
                                 .name(plugin.getGuiConfig().getString("Empty punishment button.Name"))
                                 .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getPlayerName(), "{category}", "mute"))
                                 .build());

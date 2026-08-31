@@ -3,7 +3,6 @@ package me.zachary.historygui.commands;
 import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.guis.StaffHistoryGui;
-import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -31,12 +30,12 @@ public class StaffHistoryCommand implements CommandExecutor {
 		}
 		Player player = (Player)sender;
 		if(!player.hasPermission("historygui.staff.history")){
-			MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("No permission"));
+			plugin.getLanguage().getMessage("No permission").sendMessage(player);
 			return false;
 		}
 
 		if(args.length < 1){
-			MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("Staff history command usage"));
+			plugin.getLanguage().getMessage("Staff history command usage").sendMessage(player);
 			return true;
 		}
 
@@ -46,10 +45,10 @@ public class StaffHistoryCommand implements CommandExecutor {
 				st.setString(1, args[0]);
 				try (ResultSet rs = st.executeQuery()) {
 					if(!rs.next()){
-						MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("Player not found"));
+						plugin.getLanguage().getMessage("Player not found").sendMessage(player);
 						return;
 					}
-					MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("Loading staff history").replace("{target}", args[0]));
+					plugin.getLanguage().getMessage("Loading staff history").processPlaceholder("target", args[0]).sendMessage(player);
 					UUID uuid = UUID.fromString(rs.getString("uuid"));
 					new StaffHistoryGui(plugin, player, uuid, args[0]).getInventory();
 				}

@@ -4,7 +4,6 @@ import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.guis.BrowseGui;
 import me.zachary.historygui.guis.HistoryGui;
-import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -33,7 +32,7 @@ public class HistoryCommand implements CommandExecutor {
         }
         Player player = (Player)sender;
         if(!player.hasPermission("history.gui")){
-            MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("No permission"));
+            plugin.getLanguage().getMessage("No permission").sendMessage(player);
             return false;
         }
 
@@ -43,13 +42,13 @@ public class HistoryCommand implements CommandExecutor {
         }
 
         if(args.length < 1){
-            MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("History command usage"));
+            plugin.getLanguage().getMessage("History command usage").sendMessage(player);
             return true;
         }
 
         me.zachary.historygui.player.Player target = plugin.getPlayerManager().getPlayers().values().stream().filter(player1 -> player1.getPlayerName().equalsIgnoreCase(args[0])).findFirst().orElse(null);
         if(target == null){
-            MessageUtils.sendMessage(player, plugin.getMessageConfig().getString("Player not found"));
+            plugin.getLanguage().getMessage("Player not found").sendMessage(player);
             return true;
         }
 

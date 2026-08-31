@@ -1,13 +1,12 @@
 package me.zachary.historygui.utils;
 
+import com.zachfr.zachlibrary.library.spigui.buttons.SGButton;
+import com.zachfr.zachlibrary.library.spigui.menu.SGMenu;
+import com.zachfr.zachlibrary.library.spigui.toolbar.SGToolbarBuilder;
+import com.zachfr.zachlibrary.library.xseries.XMaterial;
+import com.zachfr.zachlibrary.utils.ItemBuilder;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.guis.StaffHistoryGui;
-import me.zachary.zachcore.guis.ZMenu;
-import me.zachary.zachcore.guis.buttons.ZButton;
-import me.zachary.zachcore.guis.pagination.ZPaginationButtonBuilder;
-import me.zachary.zachcore.guis.pagination.ZPaginationButtonType;
-import me.zachary.zachcore.utils.items.ItemBuilder;
-import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -24,7 +23,7 @@ import java.util.stream.IntStream;
 public class GuiUtils {
     private static final Historygui plugin = JavaPlugin.getPlugin(Historygui.class);
 
-    public static void setGlass(ZMenu menu, int page) {
+    public static void setGlass(SGMenu menu, int page) {
         int[] TILES_TO_UPDATE;
         switch (menu.getRowsPerPage()) {
             case 3:
@@ -56,38 +55,46 @@ public class GuiUtils {
                 break;
         }
         IntStream.range(0, TILES_TO_UPDATE.length).map(i -> TILES_TO_UPDATE.length - i + -1).forEach(
-                index -> menu.setButton(page, TILES_TO_UPDATE[index], new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Global glass color")).parseItem()).name(" ").build()))
+                index -> menu.setButton(page, TILES_TO_UPDATE[index], new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Global glass color")).parseItem()).name(" ").build()))
         );
     }
 
-    public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, me.zachary.historygui.player.Player target, Runnable runnable, Boolean sort, Consumer<InventoryClickEvent> sortClick){
+    public static SGToolbarBuilder getPaginationButtonBuilder(Player player, me.zachary.historygui.player.Player target, Runnable runnable, Boolean sort, Consumer<InventoryClickEvent> sortClick){
         return getPaginationButtonBuilder(player, target, runnable, sort, false, sortClick);
     }
 
-    public static ZPaginationButtonBuilder getPaginationButtonBuilder(Player player, me.zachary.historygui.player.Player target, Runnable runnable, Boolean sort, Boolean checkPlayer, Consumer<InventoryClickEvent> sortClick){
-        return (type, inventory) -> {
-            switch (type) {
-                case CLOSE_BUTTON:
-                    if(runnable == null || checkPlayer){
-                        return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Item")).parseItem())
-                                .name(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Name"))
-                                .build()
-                        ).withListener(event -> {
-                            event.getWhoClicked().closeInventory();
-                            if(target != null && plugin.getGuiConfig().getString("Gui.Pagination.Close button.Command") != null)
-                                player.performCommand(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Command").replace("{target}", target.getPlayerName()));
-                        });
-                    }else{
-                        return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Back button.Item")).parseItem())
-                                .name(plugin.getGuiConfig().getString("Gui.Pagination.Back button.Name"))
-                                .build()
-                        ).withListener(event -> {
-                            Bukkit.getScheduler().runTask(plugin, runnable);
-                        });
-                    }
-
+    public static SGToolbarBuilder getPaginationButtonBuilder(Player player, me.zachary.historygui.player.Player target, Runnable runnable, Boolean sort, Boolean checkPlayer, Consumer<InventoryClickEvent> sortClick){
+        return (slot, page, defaultType, inventory) -> {
+            if(slot == 8){
+                if(runnable == null || checkPlayer){
+                    return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Name"))
+                            .build()
+                    ).withListener(event -> {
+                        event.getWhoClicked().closeInventory();
+                        if(target != null && plugin.getGuiConfig().getString("Gui.Pagination.Close button.Command") != null)
+                            player.performCommand(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Command").replace("{target}", target.getPlayerName()));
+                    });
+                }else{
+                    return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Back button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Back button.Name"))
+                            .build()
+                    ).withListener(event -> {
+                        Bukkit.getScheduler().runTask(plugin, runnable);
+                    });
+                }
+            }
+            if(slot == 7){
+                if(sort != null)
+                    return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Item")).parseItem())
+                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Name"))
+                            .lore(LoreUtils.getLore("Gui.Pagination.Sort button.Lore", "{sort}", sort ? plugin.getGuiConfig().getStringList("Sort placeholder.Descending") : plugin.getGuiConfig().getStringList("Sort placeholder.Ascending")))
+                            .build()).withListener(sortClick::accept);
+                else return null;
+            }
+            switch (defaultType) {
                 case PREV_BUTTON:
-                    if (inventory.getCurrentPage() > 0) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Item")).parseItem())
+                    if (inventory.getCurrentPage() > 0) return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Item")).parseItem())
                             .name(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Name"))
                             .lore(LoreUtils.getLore("Gui.Pagination.Previous button.Lore", "{page}", String.valueOf(inventory.getCurrentPage())))
                             .build()
@@ -98,14 +105,14 @@ public class GuiUtils {
                     else return null;
 
                 case CURRENT_BUTTON:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Item")).parseItem())
+                    return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Item")).parseItem())
                             .name(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Name").replace("{currentpage}", String.valueOf(inventory.getCurrentPage() + 1)).replace("{maxpage}", String.valueOf(inventory.getMaxPage())))
                             .lore(LoreUtils.getLore("Gui.Pagination.Current button.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 1)))
                             .build()
                     ).withListener(event -> event.setCancelled(true));
 
                 case NEXT_BUTTON:
-                    if (inventory.getCurrentPage() < inventory.getMaxPage() - 2) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Item")).parseItem())
+                    if (inventory.getCurrentPage() < inventory.getMaxPage() - 2) return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Item")).parseItem())
                             .name(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Name"))
                             .lore(LoreUtils.getLore("Gui.Pagination.Next button.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 2)))
                             .build()
@@ -114,36 +121,38 @@ public class GuiUtils {
                         inventory.nextPage(event.getWhoClicked());
                     });
                     else return null;
-                case UNASSIGNED:
-                    if(sort != null)
-                        return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Item")).parseItem())
-                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Name"))
-                            .lore(LoreUtils.getLore("Gui.Pagination.Sort button.Lore", "{sort}", sort ? plugin.getGuiConfig().getStringList("Sort placeholder.Descending") : plugin.getGuiConfig().getStringList("Sort placeholder.Ascending")))
-                            .build()).withListener(sortClick::accept);
-                    else return null;
-                case CUSTOM_1:
-                case CUSTOM_2:
-                case CUSTOM_3:
-                case CUSTOM_4:
                 default:
                     return null;
             }
         };
     }
 
-    public static ZPaginationButtonBuilder getStaffPaginationButtonBuilder(Player player, UUID uuid, Boolean sort, Consumer<InventoryClickEvent> sortClick, String sortType, Consumer<InventoryClickEvent> sortTypeClick, int all, int ban, int mute, int warning, int kick){
-        return (type, inventory) -> {
-            switch (type) {
-                case CLOSE_BUTTON:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Item")).parseItem())
-                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Name"))
-                            .build()
-                    ).withListener(event -> {
-                        event.getWhoClicked().closeInventory();
-                    });
-
+    public static SGToolbarBuilder getStaffPaginationButtonBuilder(Player player, UUID uuid, Boolean sort, Consumer<InventoryClickEvent> sortClick, String sortType, Consumer<InventoryClickEvent> sortTypeClick, int all, int ban, int mute, int warning, int kick){
+        return (slot, page, defaultType, inventory) -> {
+            if(slot == 8){
+                return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Item")).parseItem())
+                        .name(plugin.getGuiConfig().getString("Gui.Pagination.Close button.Name"))
+                        .build()
+                ).withListener(event -> {
+                    event.getWhoClicked().closeInventory();
+                });
+            }
+            if(slot == 7){
+                return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Item")).parseItem())
+                        .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Name"))
+                        .lore(LoreUtils.getLore("Gui.Pagination.Sort button.Lore", "{sort}", sort ? plugin.getGuiConfig().getStringList("Sort placeholder.Descending") : plugin.getGuiConfig().getStringList("Sort placeholder.Ascending")))
+                        .build()).withListener(sortClick::accept);
+            }
+            if(slot == 6){
+                return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Item")).parseItem())
+                        .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Name"))
+                        .lore(getStaffSortTypeLore("Sort staff placeholder.Content", sortType, all, ban, mute, warning, kick))
+                        .build()
+                ).withListener(sortTypeClick::accept);
+            }
+            switch (defaultType) {
                 case PREV_BUTTON:
-                    if (inventory.getCurrentPage() > 0) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Item")).parseItem())
+                    if (inventory.getCurrentPage() > 0) return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Item")).parseItem())
                             .name(plugin.getGuiConfig().getString("Gui.Pagination.Previous button.Name"))
                             .lore(LoreUtils.getLore("Gui.Pagination.Previous button.Lore", "{page}", String.valueOf(inventory.getCurrentPage())))
                             .build()
@@ -154,14 +163,14 @@ public class GuiUtils {
                     else return null;
 
                 case CURRENT_BUTTON:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Item")).parseItem())
+                    return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Item")).parseItem())
                             .name(plugin.getGuiConfig().getString("Gui.Pagination.Current button.Name").replace("{currentpage}", String.valueOf(inventory.getCurrentPage() + 1)).replace("{maxpage}", String.valueOf(inventory.getMaxPage())))
                             .lore(LoreUtils.getLore("Gui.Pagination.Current button.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 1)))
                             .build()
                     ).withListener(event -> event.setCancelled(true));
 
                 case NEXT_BUTTON:
-                    if (inventory.getCurrentPage() < inventory.getMaxPage() - 2) return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Item")).parseItem())
+                    if (inventory.getCurrentPage() < inventory.getMaxPage() - 2) return new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Item")).parseItem())
                             .name(plugin.getGuiConfig().getString("Gui.Pagination.Next button.Name"))
                             .lore(LoreUtils.getLore("Gui.Pagination.Next button.Lore", "{page}", String.valueOf(inventory.getCurrentPage() + 2)))
                             .build()
@@ -170,20 +179,6 @@ public class GuiUtils {
                         inventory.nextPage(event.getWhoClicked());
                     });
                     else return null;
-                case UNASSIGNED:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Item")).parseItem())
-                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort button.Name"))
-                            .lore(LoreUtils.getLore("Gui.Pagination.Sort button.Lore", "{sort}", sort ? plugin.getGuiConfig().getStringList("Sort placeholder.Descending") : plugin.getGuiConfig().getStringList("Sort placeholder.Ascending")))
-                            .build()).withListener(sortClick::accept);
-                case CUSTOM_4:
-                    return new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Item")).parseItem())
-                            .name(plugin.getGuiConfig().getString("Gui.Pagination.Sort type button.Name"))
-                            .lore(getStaffSortTypeLore("Sort staff placeholder.Content", sortType, all, ban, mute, warning, kick))
-                            .build()
-                    ).withListener(sortTypeClick::accept);
-                case CUSTOM_1:
-                case CUSTOM_2:
-                case CUSTOM_3:
                 default:
                     return null;
             }

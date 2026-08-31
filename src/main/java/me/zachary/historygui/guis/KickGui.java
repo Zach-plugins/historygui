@@ -1,13 +1,13 @@
 package me.zachary.historygui.guis;
 
+import com.zachfr.zachlibrary.library.spigui.buttons.SGButton;
+import com.zachfr.zachlibrary.library.spigui.menu.SGMenu;
+import com.zachfr.zachlibrary.library.xseries.XMaterial;
+import com.zachfr.zachlibrary.utils.ItemBuilder;
 import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.utils.GuiUtils;
 import me.zachary.historygui.utils.LoreUtils;
-import me.zachary.zachcore.guis.ZMenu;
-import me.zachary.zachcore.guis.buttons.ZButton;
-import me.zachary.zachcore.utils.items.ItemBuilder;
-import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -33,9 +33,9 @@ public class KickGui {
     }
 
     public void openKickInventory(Player player, me.zachary.historygui.player.Player target, Boolean fromCommand){
-        ZMenu kickGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Kick.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Kick.Row") + 2);
+        SGMenu kickGUI = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Kick.Title name").replace("{target}", target.getPlayerName()), plugin.getGuiConfig().getInt("Gui.Kick.Row") + 2);
         kickGUI.setAutomaticPaginationEnabled(true);
-        kickGUI.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
+        kickGUI.setToolbarBuilder(GuiUtils.getPaginationButtonBuilder(player, target, () -> {
             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, target, fromCommand));
         }, sort, inventoryClickEvent -> {
             sort = !sort;
@@ -69,7 +69,8 @@ public class KickGui {
 
                         String reason = rs.getString("reason");
                         int id = rs.getInt("id");
-                        ZButton banButton = new ZButton(new ItemBuilder(rs.getString("active").equals("1") ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
+                        boolean active = rs.getBoolean("active") && (rs.getLong("until") < 1 || rs.getLong("until") > System.currentTimeMillis());
+                        SGButton banButton = new SGButton(new ItemBuilder(active ? XMaterial.LIME_WOOL.parseItem() : XMaterial.RED_WOOL.parseItem())
                                 .name(plugin.getGuiConfig().getString("Gui.Kick.Icon name").replace("{time}", new SimpleDateFormat(plugin.getGuiConfig().getString("Date fomat")).format(new Date(rs.getLong("time")))))
                                 .lore(LoreUtils.getLore("Gui.Kick.Content", replace, replacement, null, null))
                                 .build()).withListener(inventoryClickEvent -> {
@@ -110,7 +111,7 @@ public class KickGui {
                             slot++; // ?
                     }
                     if(kickGUI.getButton(10) == null){
-                        ZButton emptyButton = new ZButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
+                        SGButton emptyButton = new SGButton(new ItemBuilder(XMaterial.valueOf(plugin.getGuiConfig().getString("Empty punishment button.Item")).parseItem())
                                 .name(plugin.getGuiConfig().getString("Empty punishment button.Name"))
                                 .lore(LoreUtils.getLore("Empty punishment button.Lore", "{player}", target.getPlayerName(), "{category}", "kick"))
                                 .build());

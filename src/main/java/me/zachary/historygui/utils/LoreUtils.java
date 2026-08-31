@@ -1,7 +1,6 @@
 package me.zachary.historygui.utils;
 
 import me.zachary.historygui.Historygui;
-import me.zachary.zachcore.utils.Text;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -27,7 +26,8 @@ public class LoreUtils {
                 lore.add(l);
             }
         }
-        return Text.wrap(lore);
+        // return Text.wrap(lore);
+        return lore;
     }
 
     public static List<String> getLore(String path, String oldChar1, String newChar1) {
@@ -39,7 +39,8 @@ public class LoreUtils {
         for (String l : plugin.getGuiConfig().getStringList(path)) {
             lore.add(l.replace(oldChar1, String.valueOf(newChar1)).replace(oldChar2, String.valueOf(newChar2)));
         }
-        return Text.wrap(lore);
+        // return Text.wrap(lore);
+        return lore;
     }
 
     public static List<String> getLore(String path, String oldChar1, List<String> newChar1) {
@@ -51,6 +52,7 @@ public class LoreUtils {
             else
                 lore.add(l);
         }
-        return Text.wrap(lore);
+        // return Text.wrap(lore);
+        return lore;
     }
 }

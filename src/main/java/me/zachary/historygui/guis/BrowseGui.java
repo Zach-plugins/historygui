@@ -1,14 +1,15 @@
 package me.zachary.historygui.guis;
 
+import com.zachfr.zachlibrary.library.spigui.buttons.SGButton;
+import com.zachfr.zachlibrary.library.spigui.menu.SGMenu;
+import com.zachfr.zachlibrary.library.xseries.XMaterial;
+import com.zachfr.zachlibrary.library.xseries.profiles.builder.XSkull;
+import com.zachfr.zachlibrary.library.xseries.profiles.objects.Profileable;
+import com.zachfr.zachlibrary.utils.ColorUtils;
+import com.zachfr.zachlibrary.utils.ItemBuilder;
 import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.utils.GuiUtils;
-import me.zachary.zachcore.guis.ZMenu;
-import me.zachary.zachcore.guis.buttons.ZButton;
-import me.zachary.zachcore.utils.ChatUtils;
-import me.zachary.zachcore.utils.items.ItemBuilder;
-import me.zachary.zachcore.utils.xseries.SkullUtils;
-import me.zachary.zachcore.utils.xseries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -29,8 +30,8 @@ public class BrowseGui {
     }
 
     public void openBrowseGui(Player player){
-        ZMenu browseGui = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Browse.Title name"), 5);
-        browseGui.setPaginationButtonBuilder(GuiUtils.getPaginationButtonBuilder(player, null, null, null, null));
+        SGMenu browseGui = Historygui.getGUI().create(plugin.getGuiConfig().getString("Gui.Browse.Title name"), 5);
+        browseGui.setToolbarBuilder(GuiUtils.getPaginationButtonBuilder(player, null, null, null, null));
         GuiUtils.setGlass(browseGui, 0);
 
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -39,7 +40,7 @@ public class BrowseGui {
             for(me.zachary.historygui.player.Player p : plugin.getPlayerManager().getPlayers().values()){
                 if(!plugin.getConfig().getBoolean("Offline player") && Bukkit.getPlayer(p.getUUID()) == null)
                     continue;
-                ZButton playerButton = new ZButton(plugin.getConfig().getBoolean("Player head.Enable") ? getHeadItemDisplay(p) : new ItemBuilder(XMaterial.valueOf(plugin.getConfig().getString("Player head.Item")).parseItem()).name(ChatUtils.colorCode("&7" + p.getPlayerName())).build())
+                SGButton playerButton = new SGButton(plugin.getConfig().getBoolean("Player head.Enable") ? getHeadItemDisplay(p) : new ItemBuilder(XMaterial.valueOf(plugin.getConfig().getString("Player head.Item")).parseItem()).name(ColorUtils.colorCode("&7" + p.getPlayerName())).build())
                         .withListener(inventoryClickEvent -> {
                             player.openInventory(new HistoryGui(plugin).getHistoryInventory(player, p));
                         });
@@ -63,9 +64,9 @@ public class BrowseGui {
     }
 
     public ItemStack getHeadItemDisplay(me.zachary.historygui.player.Player op) {
-        ItemStack item = SkullUtils.getSkull(op.getUUID());
+        ItemStack item = XSkull.createItem().profile(Profileable.of(op.getUUID())).apply();
         SkullMeta pSkull = (SkullMeta) item.getItemMeta();
-        pSkull.setDisplayName(ChatUtils.colorCode("&7" + op.getPlayerName()));
+        pSkull.setDisplayName(ColorUtils.colorCode("&7" + op.getPlayerName()));
         item.setItemMeta(pSkull);
         return item;
     }

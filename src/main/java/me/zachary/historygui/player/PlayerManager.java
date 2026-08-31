@@ -3,7 +3,6 @@ package me.zachary.historygui.player;
 import litebans.api.Database;
 import me.zachary.historygui.Historygui;
 import me.zachary.historygui.guis.HistoryGui;
-import me.zachary.zachcore.utils.MessageUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
